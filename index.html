@@ -1,490 +1,965 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Academia</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-    .container { max-width: 1200px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px; }
-    /* Tabs principais */
-    .tabs { display: flex; flex-wrap: wrap; gap: 0; }
-    .tabs input[type="radio"] { display: none; }
-    .tabs label { flex: 1 1 auto; padding: 12px 15px; background: #ddd; cursor: pointer; text-align: center; border-bottom: 2px solid transparent; transition: 0.3s; }
-    .tabs label:hover { background: #ccc; }
-    .tabs input:checked + label { background: #fff; border-bottom-color: #007bff; font-weight: bold; }
-    .tab-content { display: none; padding: 20px 0; }
-    #tab1:checked ~ #content1,
-    #tab2:checked ~ #content2,
-    #tab3:checked ~ #content3,
-    #tab4:checked ~ #content4,
-    #tab5:checked ~ #content5,
-    #tab6:checked ~ #content6,
-    #tab7:checked ~ #content7 { display: block; }
-    /* Sub-tabs (Fisioterapia) */
-    .sub-tabs { display: flex; flex-wrap: wrap; gap: 0; margin-bottom: 15px; }
-    .sub-tabs input[type="radio"] { display: none; }
-    .sub-tabs label { padding: 8px 12px; background: #e9ecef; cursor: pointer; border-radius: 4px 4px 0 0; }
-    .sub-tabs input:checked + label { background: #007bff; color: #fff; }
-    .sub-tab-content { display: none; padding: 15px; border: 1px solid #dee2e6; border-radius: 0 4px 4px 4px; }
-    #subtab1:checked ~ #subcontent1,
-    #subtab2:checked ~ #subcontent2,
-    #subtab3:checked ~ #subcontent3 { display: block; }
-    /* Formulários */
-    .form { display: flex; flex-direction: column; gap: 15px; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-group label { font-weight: bold; }
-    .input, .select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; width: 100%; }
-    .input:focus, .select:focus { outline: none; border-color: #007bff; }
-    .select { appearance: auto; }
-    .button { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; transition: 0.3s; }
-    .button-primary { background: #007bff; color: #fff; }
-    .button-primary:hover { background: #0056b3; }
-    .button-success { background: #28a745; color: #fff; }
-    .button-success:hover { background: #1e7e34; }
-    .button-danger { background: #dc3545; color: #fff; }
-    .button-danger:hover { background: #c82333; }
-    /* Status */
-    .status-verde { color: #28a745; font-weight: bold; }
-    .status-vermelho { color: #dc3545; font-weight: bold; }
-    /* Tabelas */
-    .table { width: 100%; border-collapse: collapse; }
-    .table th, .table td { padding: 8px; text-align: left; border-bottom: 1px solid #dee2e6; }
-    .table th { background: #f8f9fa; font-weight: bold; }
-    /* Responsivo */
-    @media (max-width: 768px) {
-      .tabs label { flex: 1 1 100%; }
-      .sub-tabs label { flex: 1 1 100%; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia Fisio Corpus</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; margin-bottom: 20px; }
+        .tabs { display: flex; flex-wrap: wrap; border-bottom: 2px solid #ddd; margin-bottom: 20px; }
+        .tab-btn { padding: 10px 20px; cursor: pointer; background: #eee; border: none; margin-right: 5px; border-radius: 5px 5px 0 0; font-size: 16px; }
+        .tab-btn.active { background: #007bff; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .sub-tabs { display: flex; margin-bottom: 15px; }
+        .sub-tab-btn { padding: 8px 16px; cursor: pointer; background: #e9ecef; border: none; margin-right: 4px; border-radius: 4px; }
+        .sub-tab-btn.active { background: #17a2b8; color: white; }
+        .sub-tab-content { display: none; }
+        .sub-tab-content.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        input[type="checkbox"] { width: auto; margin-right: 5px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: black; }
+        .btn-print { background: #6f42c1; color: white; }
+        .status-ativo { color: green; font-weight: bold; }
+        .status-inativo { color: red; font-weight: bold; }
+        .green { color: green; }
+        .red { color: red; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+        .agenda-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+        .agenda-slot { border: 1px solid #ccc; padding: 5px; min-height: 50px; }
+        .agenda-slot h4 { margin-bottom: 3px; }
+        .checkbox-group label { display: inline-block; margin-right: 10px; }
+        .signature-pad { border: 1px solid #ccc; width: 100%; height: 150px; cursor: crosshair; }
+        @media print { .no-print { display: none; } }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Tabs principais -->
-    <div class="tabs">
-      <input type="radio" name="main-tab" id="tab1" checked>
-      <label for="tab1">Cadastro</label>
-      <input type="radio" name="main-tab" id="tab2">
-      <label for="tab2">Ficha de Avaliação</label>
-      <input type="radio" name="main-tab" id="tab3">
-      <label for="tab3">Agenda Pilates</label>
-      <input type="radio" name="main-tab" id="tab4">
-      <label for="tab4">Recibo</label>
-      <input type="radio" name="main-tab" id="tab5">
-      <label for="tab5">Financeiro</label>
-      <input type="radio" name="main-tab" id="tab6">
-      <label for="tab6">Evolução</label>
-      <input type="radio" name="main-tab" id="tab7">
-      <label for="tab7">Fisioterapia</label>
-      <!-- Conteúdos das abas -->
-      <div id="content1" class="tab-content">
-        <h2>Cadastro</h2>
-        <div class="form">
-          <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" class="input" placeholder="Nome do aluno">
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" class="input" placeholder="email@exemplo.com">
-          </div>
-          <div class="form-group">
-            <label for="plano">Plano</label>
-            <select id="plano" class="select">
-              <option value="">Selecione</option>
-              <option value="basico">Básico</option>
-              <option value="premium">Premium</option>
-            </select>
-          </div>
-          <button class="button button-primary">Salvar</button>
-        </div>
-      </div>
-      <div id="content2" class="tab-content">
-        <h2>Ficha de Avaliação</h2>
-        <div class="form">
-          <div class="form-group">
-            <label for="peso">Peso (kg)</label>
-            <input type="number" id="peso" class="input">
-          </div>
-          <div class="form-group">
-            <label for="altura">Altura (m)</label>
-            <input type="number" step="0.01" id="altura" class="input">
-          </div>
-          <button class="button button-primary">Avaliar</button>
-        </div>
-      </div>
-      <div id="content3" class="tab-content">
-        <h2>Agenda Pilates</h2>
-        <table class="table">
-          <thead>
-            <tr><th>Horário</th><th>Segunda</th><th>Terça</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>08:00</td><td><span class="status-verde">Disponível</span></td><td><span class="status-vermelho">Ocupado</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div id="content4" class="tab-content">
-        <h2>Recibo</h2>
-        <div class="form">
-          <div class="form-group">
-            <label for="valor">Valor</label>
-            <input type="number" id="valor" class="input">
-          </div>
-          <button class="button button-success">Gerar Recibo</button>
-        </div>
-      </div>
-      <div id="content5" class="tab-content">
-        <h2>Financeiro</h2>
-        <table class="table">
-          <thead>
-            <tr><th>Data</th><th>Descrição</th><th>Valor</th><th>Status</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>01/10/2023</td><td>Mensalidade</td><td>R$ 100,00</td><td><span class="status-verde">Pago</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div id="content6" class="tab-content">
-        <h2>Evolução</h2>
-        <p>Gráficos e dados de evolução serão exibidos aqui.</p>
-      </div>
-      <div id="content7" class="tab-content">
-        <h2>Fisioterapia</h2>
-        <!-- Sub-tabs Fisioterapia -->
-        <div class="sub-tabs">
-          <input type="radio" name="sub-tab" id="subtab1" checked>
-          <label for="subtab1">Sub-aba 1</label>
-          <input type="radio" name="sub-tab" id="subtab2">
-          <label for="subtab2">Sub-aba 2</label>
-          <input type="radio" name="sub-tab" id="subtab3">
-          <label for="subtab3">Sub-aba 3</label>
-          <div id="subcontent1" class="sub-tab-content">
-            <h3>Sub-aba 1</h3>
-            <div class="form">
-              <div class="form-group">
-                <label for="sub1-input">Campo 1</label>
-                <input type="text" id="sub1-input" class="input">
-              </div>
-              <button class="button button-primary">Salvar</button>
-            </div>
-          </div>
-          <div id="subcontent2" class="sub-tab-content">
-            <h3>Sub-aba 2</h3>
-            <p>Conteúdo da sub-aba 2.</p>
-          </div>
-          <div id="subcontent3" class="sub-tab-content">
-            <h3>Sub-aba 3</h3>
-            <p>Conteúdo da sub-aba 3.</p>
-          </div>
-        </div>
-      </div>
+<div class="container">
+    <h1>Academia Fisio Corpus</h1>
+    <div class="tabs" id="mainTabs">
+        <button class="tab-btn active" data-tab="cadastro">Cadastro</button>
+        <button class="tab-btn" data-tab="ficha">Ficha de Avaliação</button>
+        <button class="tab-btn" data-tab="agenda-pilates">Agenda Pilates</button>
+        <button class="tab-btn" data-tab="recibo">Recibo</button>
+        <button class="tab-btn" data-tab="financeiro">Financeiro</button>
+        <button class="tab-btn" data-tab="evolucao">Evolução</button>
+        <button class="tab-btn" data-tab="declaracao">Declaração</button>
+        <button class="tab-btn" data-tab="fisioterapia">Fisioterapia</button>
     </div>
-      (function(){
-  // ===== DADOS =====
-  let data = JSON.parse(localStorage.getItem('academiaData')) || {
-    clients: [],
-    evaluations: [],
-    appointments: [],
-    finances: [],
-    evolutions: [],
-    physioSessions: []
-  };
-  function saveData() { localStorage.setItem('academiaData', JSON.stringify(data)); }
 
-  // ===== UI =====
-  const app = document.getElementById('app') || document.body;
-  app.innerHTML = `
-    <h1>Academia Pilates</h1>
-    <nav>
-      <button onclick="showView('cadastro')">Cadastro</button>
-      <button onclick="showView('avaliacao')">Avaliação</button>
-      <button onclick="showView('agenda')">Agenda</button>
-      <button onclick="showView('recibo')">Recibo</button>
-      <button onclick="showView('financeiro')">Financeiro</button>
-      <button onclick="showView('evolucao')">Evolução</button>
-      <button onclick="showView('fisio')">Fisioterapia</button>
-    </nav>
-    <div id="view"></div>
-  `;
+    <!-- CADASTRO -->
+    <div id="cadastro" class="tab-content active">
+        <h2>Cadastro de Alunos</h2>
+        <form id="cadastroForm">
+            <div class="form-group">
+                <label>Nome completo</label>
+                <input type="text" id="nome" required>
+            </div>
+            <div class="form-group">
+                <label>Apelido</label>
+                <input type="text" id="apelido">
+            </div>
+            <div class="form-group">
+                <label>Telefone</label>
+                <input type="text" id="telefone" placeholder="(XX) XXXXX-XXXX" maxlength="15">
+            </div>
+            <div class="form-group">
+                <label>E-mail (opcional)</label>
+                <input type="email" id="email">
+            </div>
+            <div class="form-group">
+                <label>Dias de Pilates</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="dias-pilates" value="Seg"> Seg</label>
+                    <label><input type="checkbox" class="dias-pilates" value="Ter"> Ter</label>
+                    <label><input type="checkbox" class="dias-pilates" value="Qua"> Qua</label>
+                    <label><input type="checkbox" class="dias-pilates" value="Qui"> Qui</label>
+                    <label><input type="checkbox" class="dias-pilates" value="Sex"> Sex</label>
+                    <label><input type="checkbox" class="dias-pilates" value="Sab"> Sáb</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="status">
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-danger" id="deletarAluno">Deletar Aluno</button>
+        </form>
+        <div id="mensalidadeInfo" style="margin-top:15px; font-weight:bold;"></div>
+        <h3 style="margin-top:20px;">Alunos Cadastrados</h3>
+        <table id="tabelaAlunos">
+            <thead>
+                <tr><th>Nome</th><th>Apelido</th><th>Telefone</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-  function showView(view) {
-    document.getElementById('view').innerHTML = views[view]();
-    attachHandlers(view);
-  }
+    <!-- FICHA DE AVALIAÇÃO -->
+    <div id="ficha" class="tab-content">
+        <h2>Ficha de Avaliação</h2>
+        <form id="fichaForm">
+            <div class="form-group">
+                <label>Selecionar Aluno</label>
+                <select id="selectAlunoFicha"></select>
+            </div>
+            <div class="form-group">
+                <label>CPF</label>
+                <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+            </div>
+            <div class="form-group">
+                <label>Já fez pilates alguma vez?</label>
+                <select id="jaFezPilates">
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Erro Postural</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="erro-postural" value="Cifose"> Cifose</label>
+                    <label><input type="checkbox" class="erro-postural" value="Lordose"> Lordose</label>
+                    <label><input type="checkbox" class="erro-postural" value="Escoliose"> Escoliose</label>
+                    <label><input type="checkbox" class="erro-postural" value="Ombros caídos"> Ombros caídos</label>
+                    <label><input type="checkbox" class="erro-postural" value="Outro"> Outro (<input type="text" id="outroErro" placeholder="Especifique">)</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Declaração de autorização de imagem</label>
+                <p style="font-size:0.9em;">Autorizo o uso de minha imagem para fins de divulgação da academia.</p>
+                <canvas id="signaturePad" class="signature-pad"></canvas>
+                <button type="button" id="clearSignature" class="btn btn-warning">Limpar Assinatura</button>
+                <input type="hidden" id="signatureData">
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar Ficha</button>
+            <button type="button" class="btn btn-print" onclick="printFicha()">Imprimir Ficha</button>
+        </form>
+    </div>
 
-  // ===== MÁSCARA TELEFONE =====
-  function phoneMask(value) {
-    let v = value.replace(/\D/g,'');
-    if(v.length <= 2) return '('+v;
-    if(v.length <= 7) return '('+v.slice(0,2)+') '+v.slice(2);
-    return '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7,11);
-  }
+    <!-- AGENDA PILATES -->
+    <div id="agenda-pilates" class="tab-content">
+        <h2>Agenda Pilates</h2>
+        <div class="form-group">
+            <label>Selecionar Mês/Ano</label>
+            <input type="month" id="mesAgenda" value="2025-01">
+        </div>
+        <div id="agendaGrid"></div>
+        <button class="btn btn-primary" onclick="salvarAgenda()">Salvar Agenda</button>
+    </div>
 
-  // ===== CADASTRO =====
-  function cadastroView() {
-    let clients = data.clients;
-    let html = `<h2>Cadastro de Clientes</h2>
-      <form id="cadForm">
-        <input type="text" id="nome" placeholder="Nome" required>
-        <input type="text" id="telefone" placeholder="(99) 99999-9999" oninput="this.value=phoneMask(this.value)">
-        <input type="text" id="apelido" placeholder="Apelido">
-        <label>Dias de Pilates:
-          <select id="dias">
-            <option value="1">1x/semana</option>
-            <option value="2">2x/semana</option>
-            <option value="3">3x/semana</option>
-          </select>
-        </label>
-        <label>Status:
-          <select id="status">
-            <option value="ativo">Ativo</option>
-            <option value="inativo">Inativo</option>
-          </select>
-        </label>
-        <button type="submit">Cadastrar</button>
-      </form>
-      <div id="clientList">`;
-    clients.forEach((c,i) => {
-      let color = c.status==='ativo' ? 'green' : 'red';
-      html += `<div style="border:1px solid #ccc; padding:5px; margin:5px;">
-        <strong>${c.nome}</strong> (${c.apelido}) - Tel: ${c.telefone} - Dias: ${c.dias}x - <span style="color:${color}">${c.status}</span>
-        <button onclick="deleteClient(${i})">Excluir</button>
-      </div>`;
+    <!-- RECIBO -->
+    <div id="recibo" class="tab-content">
+        <h2>Recibo</h2>
+        <form id="reciboForm">
+            <div class="form-group">
+                <label>Aluno</label>
+                <select id="selectAlunoRecibo"></select>
+            </div>
+            <div class="form-group">
+                <label>Serviços</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="servicos" value="Camisa"> Camisa</label>
+                    <label><input type="checkbox" class="servicos" value="Meia"> Meia</label>
+                    <label><input type="checkbox" class="servicos" value="Fisioterapia"> Fisioterapia</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Dia do Pagamento</label>
+                <input type="date" id="diaPagamento">
+            </div>
+            <div class="form-group">
+                <label>Observações</label>
+                <textarea id="observacoesRecibo" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Mensagem personalizada</label>
+                <input type="text" id="mensagemRecibo" value="Obrigado pela confiança!!">
+            </div>
+            <button type="submit" class="btn btn-primary">Gerar Recibo</button>
+        </form>
+        <div id="reciboOutput" style="margin-top:20px; border:1px solid #ccc; padding:15px;"></div>
+    </div>
+
+    <!-- FINANCEIRO -->
+    <div id="financeiro" class="tab-content">
+        <h2>Financeiro</h2>
+        <div class="form-group">
+            <label>Mês/Ano</label>
+            <input type="month" id="mesFinanceiro" value="2025-01">
+        </div>
+        <table id="tabelaFinanceiro">
+            <thead>
+                <tr><th>Aluno</th><th>Status Pagamento</th><th>Ação</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="btn btn-primary" onclick="salvarFinanceiro()">Salvar</button>
+        <h3 style="margin-top:20px;">Histórico</h3>
+        <div id="historicoFinanceiro"></div>
+    </div>
+
+    <!-- EVOLUÇÃO -->
+    <div id="evolucao" class="tab-content">
+        <h2>Evolução</h2>
+        <div class="form-group">
+            <label>Aluno</label>
+            <select id="selectAlunoEvolucao"></select>
+        </div>
+        <div class="form-group">
+            <label>Evoluções prontas</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" class="evolucao-pronta" value="Melhora na flexibilidade"> Melhora na flexibilidade</label>
+                <label><input type="checkbox" class="evolucao-pronta" value="Aumento de força"> Aumento de força</label>
+                <label><input type="checkbox" class="evolucao-pronta" value="Redução de dor"> Redução de dor</label>
+                <label><input type="checkbox" class="evolucao-pronta" value="Melhora na postura"> Melhora na postura</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Estado Geral</label>
+            <select id="estadoGeral">
+                <option value="BEG">BEG - Bom Estado Geral</option>
+                <option value="MEG">MEG - Médio Estado Geral</option>
+                <option value="REG">REG - Regular Estado Geral</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Relato</label>
+            <textarea id="relatoEvolucao" rows="5"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="salvarEvolucao()">Salvar Evolução</button>
+        <button class="btn btn-print" onclick="printEvolucao()">Imprimir Evoluções</button>
+        <div id="evolucoesSalvas" style="margin-top:20px;"></div>
+    </div>
+
+    <!-- DECLARAÇÃO -->
+    <div id="declaracao" class="tab-content">
+        <h2>Declaração</h2>
+        <div class="form-group">
+            <label>Aluno</label>
+            <select id="selectAlunoDeclaracao"></select>
+        </div>
+        <div class="form-group">
+            <label>Texto da Declaração</label>
+            <textarea id="textoDeclaracao" rows="8">Declaro para os devidos fins que o(a) aluno(a) [NOME] está regularmente matriculado(a) na Academia Fisio Corpus.</textarea>
+        </div>
+        <button class="btn btn-print" onclick="printDeclaracao()">Imprimir Declaração</button>
+    </div>
+
+    <!-- FISIOTERAPIA -->
+    <div id="fisioterapia" class="tab-content">
+        <h2>Fisioterapia</h2>
+        <div class="sub-tabs">
+            <button class="sub-tab-btn active" data-subtab="fisio">Fisioterapia</button>
+            <button class="sub-tab-btn" data-subtab="quiropraxia">Quiropraxia</button>
+            <button class="sub-tab-btn" data-subtab="rpg">RPG</button>
+        </div>
+        <div id="sub-fisio" class="sub-tab-content active">
+            <h3>Fisioterapia</h3>
+            <div class="form-group">
+                <label>Aluno</label>
+                <select class="selectAlunoFisio"></select>
+            </div>
+            <div class="form-group">
+                <label>Dias</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="dias-fisio" value="Seg"> Seg</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Ter"> Ter</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Qua"> Qua</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Qui"> Qui</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Sex"> Sex</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Procedimentos</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Ventosa"> Ventosa</label>
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Agulhamento"> Agulhamento</label>
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Outro"> Outro: <input type="text" class="outro-procedimento-fisio" placeholder="Especifique"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Comparecimento</label>
+                <input type="text" class="comparecimento-fisio" placeholder="Quantas vezes?" style="width:100px;">
+            </div>
+            <div class="form-group">
+                <label>Pagamento</label>
+                <select class="pagamento-fisio">
+                    <option value="Pago">Pago</option>
+                    <option value="Pendente">Pendente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Evolução</label>
+                <textarea class="evolucao-fisio" rows="4" placeholder="Descreva a evolução..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="salvarFisio('fisio')">Salvar</button>
+        </div>
+        <div id="sub-quiropraxia" class="sub-tab-content">
+            <h3>Quiropraxia</h3>
+            <!-- Same structure as fisio, using different data keys -->
+            <div class="form-group">
+                <label>Aluno</label>
+                <select class="selectAlunoFisio"></select>
+            </div>
+            <div class="form-group">
+                <label>Dias</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="dias-fisio" value="Seg"> Seg</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Ter"> Ter</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Qua"> Qua</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Qui"> Qui</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Sex"> Sex</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Procedimentos</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Ventosa"> Ventosa</label>
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Agulhamento"> Agulhamento</label>
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Outro"> Outro: <input type="text" class="outro-procedimento-fisio" placeholder="Especifique"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Comparecimento</label>
+                <input type="text" class="comparecimento-fisio" placeholder="Quantas vezes?" style="width:100px;">
+            </div>
+            <div class="form-group">
+                <label>Pagamento</label>
+                <select class="pagamento-fisio">
+                    <option value="Pago">Pago</option>
+                    <option value="Pendente">Pendente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Evolução</label>
+                <textarea class="evolucao-fisio" rows="4" placeholder="Descreva a evolução..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="salvarFisio('quiropraxia')">Salvar</button>
+        </div>
+        <div id="sub-rpg" class="sub-tab-content">
+            <h3>RPG</h3>
+            <!-- Same structure, use data key 'rpg' -->
+            <div class="form-group">
+                <label>Aluno</label>
+                <select class="selectAlunoFisio"></select>
+            </div>
+            <div class="form-group">
+                <label>Dias</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="dias-fisio" value="Seg"> Seg</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Ter"> Ter</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Qua"> Qua</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Qui"> Qui</label>
+                    <label><input type="checkbox" class="dias-fisio" value="Sex"> Sex</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Procedimentos</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Ventosa"> Ventosa</label>
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Agulhamento"> Agulhamento</label>
+                    <label><input type="checkbox" class="procedimentos-fisio" value="Outro"> Outro: <input type="text" class="outro-procedimento-fisio" placeholder="Especifique"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Comparecimento</label>
+                <input type="text" class="comparecimento-fisio" placeholder="Quantas vezes?" style="width:100px;">
+            </div>
+            <div class="form-group">
+                <label>Pagamento</label>
+                <select class="pagamento-fisio">
+                    <option value="Pago">Pago</option>
+                    <option value="Pendente">Pendente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Evolução</label>
+                <textarea class="evolucao-fisio" rows="4" placeholder="Descreva a evolução..."></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="salvarFisio('rpg')">Salvar</button>
+        </div>
+        <!-- Shared agenda for Fisioterapia -->
+        <h3 style="margin-top:20px;">Agenda Compartilhada (07:00-20:00)</h3>
+        <div class="form-group">
+            <label>Selecionar Mês/Ano</label>
+            <input type="month" id="mesAgendaFisio" value="2025-01">
+        </div>
+        <div id="agendaFisioGrid"></div>
+        <button class="btn btn-primary" onclick="salvarAgendaFisio()">Salvar Agenda Fisioterapia</button>
+    </div>
+</div>
+
+<script>
+    // ===================== INIT =====================
+    let alunos = JSON.parse(localStorage.getItem('alunos')) || [];
+    let fichas = JSON.parse(localStorage.getItem('fichas')) || {};
+    let agendaPilates = JSON.parse(localStorage.getItem('agendaPilates')) || {};
+    let financeiro = JSON.parse(localStorage.getItem('financeiro')) || {};
+    let evolucoes = JSON.parse(localStorage.getItem('evolucoes')) || {};
+    let fisioData = JSON.parse(localStorage.getItem('fisioData')) || { fisio: {}, quiropraxia: {}, rpg: {} };
+    let agendaFisio = JSON.parse(localStorage.getItem('agendaFisio')) || {};
+
+    // ===================== UTILITIES =====================
+    function saveData() {
+        localStorage.setItem('alunos', JSON.stringify(alunos));
+        localStorage.setItem('fichas', JSON.stringify(fichas));
+        localStorage.setItem('agendaPilates', JSON.stringify(agendaPilates));
+        localStorage.setItem('financeiro', JSON.stringify(financeiro));
+        localStorage.setItem('evolucoes', JSON.stringify(evolucoes));
+        localStorage.setItem('fisioData', JSON.stringify(fisioData));
+        localStorage.setItem('agendaFisio', JSON.stringify(agendaFisio));
+    }
+
+    function formatPhone(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0, 11);
+        if (value.length > 6) {
+            value = '(' + value.slice(0,2) + ') ' + value.slice(2,7) + '-' + value.slice(7);
+        } else if (value.length > 2) {
+            value = '(' + value.slice(0,2) + ') ' + value.slice(2);
+        } else if (value.length > 0) {
+            value = '(' + value;
+        }
+        input.value = value;
+    }
+
+    function formatCPF(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.slice(0,11);
+        if (value.length > 9) {
+            value = value.slice(0,3) + '.' + value.slice(3,6) + '.' + value.slice(6,9) + '-' + value.slice(9);
+        } else if (value.length > 6) {
+            value = value.slice(0,3) + '.' + value.slice(3,6) + '.' + value.slice(6);
+        } else if (value.length > 3) {
+            value = value.slice(0,3) + '.' + value.slice(3);
+        }
+        input.value = value;
+    }
+
+    function populateAlunosSelect(selectElement) {
+        selectElement.innerHTML = '<option value="">Selecione um aluno</option>';
+        alunos.forEach(aluno => {
+            selectElement.innerHTML += <option value="${aluno.id}">${aluno.nome} (${aluno.apelido || aluno.nome})</option>;
+        });
+    }
+
+    function getAlunoById(id) {
+        return alunos.find(a => a.id === id);
+    }
+
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+    // ===================== TABS =====================
+    document.querySelectorAll('#mainTabs .tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById(this.dataset.tab).classList.add('active');
+            if (this.dataset.tab === 'cadastro') renderAlunos();
+            if (this.dataset.tab === 'ficha') populateAlunosSelect(document.getElementById('selectAlunoFicha'));
+            if (this.dataset.tab === 'agenda-pilates') renderAgenda();
+            if (this.dataset.tab === 'recibo') populateAlunosSelect(document.getElementById('selectAlunoRecibo'));
+            if (this.dataset.tab === 'financeiro') renderFinanceiro();
+            if (this.dataset.tab === 'evolucao') populateAlunosSelect(document.getElementById('selectAlunoEvolucao'));
+            if (this.dataset.tab === 'declaracao') populateAlunosSelect(document.getElementById('selectAlunoDeclaracao'));
+            if (this.dataset.tab === 'fisioterapia') { populateFisioSelects(); renderAgendaFisio(); }
+        });
     });
-    html += </div>;
-    return html;
-  }
 
-  function attachCadastro() {
-    document.getElementById('cadForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let nome = document.getElementById('nome').value;
-      let telefone = document.getElementById('telefone').value;
-      let apelido = document.getElementById('apelido').value;
-      let dias = parseInt(document.getElementById('dias').value);
-      let status = document.getElementById('status').value;
-      let preco = [100,140,170][dias-1];
-      data.clients.push({nome, telefone, apelido, dias, status, preco});
-      saveData();
-      showView('cadastro');
+    // Sub-tabs Fisioterapia
+    document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.sub-tab-content').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('sub-' + this.dataset.subtab).classList.add('active');
+        });
     });
-  }
 
-  window.deleteClient = function(index) {
-    data.clients.splice(index,1);
-    saveData();
-    showView('cadastro');
-  };
+    // ===================== CADASTRO =====================
+    document.getElementById('telefone').addEventListener('input', function() { formatPhone(this); });
 
-  // ===== AVALIAÇÃO =====
-  function avaliacaoView() {
-    let clients = data.clients;
-    let selectOptions = clients.map((c,i) => <option value="${i}">${c.nome}</option>).join('');
-    return `<h2>Ficha de Avaliação</h2>
-      <form id="avalForm">
-        <label>Cliente: <select id="avalClient">${selectOptions}</select></label>
-        <input type="text" id="cpf" placeholder="CPF">
-        <label>Já fez pilates? <input type="checkbox" id="fezPilates"></label>
-        <p>Erro Postural:</p>
-        <label><input type="checkbox" class="erro" value="Cifose">Cifose</label>
-        <label><input type="checkbox" class="erro" value="Lordose">Lordose</label>
-        <label><input type="checkbox" class="erro" value="Escoliose">Escoliose</label>
-        <label><input type="checkbox" class="erro" value="Ombros caídos">Ombros caídos</label>
-        <label><input type="checkbox" class="erro" value="Outro">Outro</label>
-        <p>Assinatura:</p>
-        <canvas id="signatureCanvas" width="300" height="100" style="border:1px solid black"></canvas>
-        <button type="button" onclick="clearCanvas()">Limpar</button>
-        <button type="submit">Salvar Avaliação</button>
-      </form>`;
-  }
+    document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nome = document.getElementById('nome').value.trim();
+        const apelido = document.getElementById('apelido').value.trim();
+        const telefone = document.getElementById('telefone').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const dias = Array.from(document.querySelectorAll('.dias-pilates:checked')).map(cb => cb.value);
+        const status = document.getElementById('status').value;
 
-  function attachAvaliacao() {
-    // Canvas setup
-    let canvas = document.getElementById('signatureCanvas');
-    let ctx = canvas.getContext('2d');
+        if (!nome) { alert('Nome é obrigatório'); return; }
+
+        const aluno = {
+            id: generateId(),
+            nome,
+            apelido,
+            telefone,
+            email,
+            dias,
+            status
+        };
+        alunos.push(aluno);
+        saveData();
+        renderAlunos();
+        calcularMensalidade(dias);
+        this.reset();
+        document.getElementById('mensalidadeInfo').innerHTML = '';
+        alert('Aluno cadastrado com sucesso!');
+    });
+
+    function calcularMensalidade(dias) {
+        const qtd = dias.length;
+        let valor = '';
+        if (qtd === 1) valor = '1x R$100';
+        else if (qtd === 2) valor = '2x R$140';
+        else if (qtd >= 3) valor = '3x R$170';
+        else valor = 'Nenhum dia selecionado';
+        document.getElementById('mensalidadeInfo').innerHTML = Mensalidade: ${valor};
+    }
+
+    // Also show mensalidade when checkboxes change
+    document.querySelectorAll('.dias-pilates').forEach(cb => {
+        cb.addEventListener('change', function() {
+            const checked = Array.from(document.querySelectorAll('.dias-pilates:checked')).map(c => c.value);
+            calcularMensalidade(checked);
+        });
+    });
+
+    document.getElementById('deletarAluno').addEventListener('click', function() {
+        const id = prompt('Digite o ID do aluno para deletar:');
+        if (id && confirm('Tem certeza?')) {
+            alunos = alunos.filter(a => a.id !== id);
+            saveData();
+            renderAlunos();
+        }
+    });
+
+    function renderAlunos() {
+        const tbody = document.querySelector('#tabelaAlunos tbody');
+        tbody.innerHTML = '';
+        alunos.forEach(aluno => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${aluno.nome}</td>
+                <td>${aluno.apelido || '-'}</td>
+                <td>${aluno.telefone}</td>
+                <td class="${aluno.status === 'Ativo' ? 'status-ativo' : 'status-inativo'}">${aluno.status}</td>
+                <td><button class="btn btn-danger" onclick="deletarAluno('${aluno.id}')">Deletar</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function deletarAluno(id) {
+        if (confirm('Deletar este aluno?')) {
+            alunos = alunos.filter(a => a.id !== id);
+            saveData();
+            renderAlunos();
+        }
+    }
+
+    // ===================== FICHA DE AVALIAÇÃO =====================
+    document.getElementById('cpf').addEventListener('input', function() { formatCPF(this); });
+
+    // Signature pad
+    const canvas = document.getElementById('signaturePad');
+    const ctx = canvas.getContext('2d');
     let drawing = false;
-    canvas.addEventListener('mousedown', (e) => { drawing=true; ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); });
-    canvas.addEventListener('mousemove', (e) => { if(drawing) { ctx.lineTo(e.offsetX,e.offsetY); ctx.stroke(); } });
-    canvas.addEventListener('mouseup', () => { drawing=false; });
-    window.clearCanvas = () => { ctx.clearRect(0,0,canvas.width,canvas.height); };
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+    // Touch support
+    canvas.addEventListener('touchstart', function(e) { e.preventDefault(); startDrawing(e); });
+    canvas.addEventListener('touchmove', function(e) { e.preventDefault(); draw(e); });
+    canvas.addEventListener('touchend', stopDrawing);
 
-    document.getElementById('avalForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let clientIndex = document.getElementById('avalClient').value;
-      let cpf = document.getElementById('cpf').value;
-      let fezPilates = document.getElementById('fezPilates').checked;
-      let erros = [];
-      document.querySelectorAll('.erro:checked').forEach(el => erros.push(el.value));
-      let signature = canvas.toDataURL();
-      data.evaluations.push({ clientIndex, cpf, fezPilates, erros, signature });
-      saveData();
-      alert('Avaliação salva!');
+    function startDrawing(e) {
+        drawing = true;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+    function draw(e) {
+        if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+    function stopDrawing() {
+        drawing = false;
+        document.getElementById('signatureData').value = canvas.toDataURL();
+    }
+    document.getElementById('clearSignature').addEventListener('click', function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('signatureData').value = '';
     });
-  }
 
-  // ===== AGENDA =====
-  function agendaView() {
-    // 07-20h, 7 vagas (simplificado como slots)
-    let html = <h2>Agenda - Pilates</h2>;
-    for(let h=7; h<20; h++) {
-      html += <div><strong>${h}h</strong>: <select onchange="bookAppt(${h},this.value)">;
-      html += <option value="">Vazio</option>;
-      data.clients.forEach((c,i) => {
-        let selected = data.appointments.some(a=>a.hour===h && a.clientIndex==i) ? 'selected' : '';
-        html += <option value="${i}" ${selected}>${c.nome}</option>;
-      });
-      html += </select></div>;
+    document.getElementById('fichaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const alunoId = document.getElementById('selectAlunoFicha').value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const cpf = document.getElementById('cpf').value;
+        const jaFez = document.getElementById('jaFezPilates').value;
+        const erros = Array.from(document.querySelectorAll('.erro-postural:checked')).map(cb => cb.value);
+        if (erros.includes('Outro')) {
+            const outro = document.getElementById('outroErro').value.trim();
+            if (outro) erros[erros.indexOf('Outro')] = 'Outro: ' + outro;
+        }
+        const signature = document.getElementById('signatureData').value;
+        fichas[alunoId] = { cpf, jaFez, erros, signature };
+        saveData();
+        alert('Ficha salva!');
+    });
+
+    function printFicha() {
+        const alunoId = document.getElementById('selectAlunoFicha').value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const aluno = getAlunoById(alunoId);
+        const ficha = fichas[alunoId] || {};
+        const win = window.open('', '_blank');
+        win.document.write(`
+            <html><head><title>Ficha de Avaliação - ${aluno.nome}</title>
+            <style>body { font-family: Arial; padding: 20px; } h2 { text-align: center; } .field { margin: 10px 0; } .signature { max-width: 300px; }</style>
+            </head><body>
+            <h2>Ficha de Avaliação</h2>
+            <div class="field"><strong>Nome:</strong> ${aluno.nome}</div>
+            <div class="field"><strong>CPF:</strong> ${ficha.cpf || ''}</div>
+            <div class="field"><strong>Já fez pilates alguma vez?</strong> ${ficha.jaFez || ''}</div>
+            <div class="field"><strong>Erros Posturais:</strong> ${(ficha.erros || []).join(', ')}</div>
+            <div class="field"><strong>Assinatura:</strong><br>${ficha.signature ? '<img src="'+ficha.signature+'" class="signature" />' : 'Não assinado'}</div>
+            </body></html>
+        `);
+        win.document.close();
+        win.print();
     }
-    return html;
-  }
 
-  window.bookAppt = function(hour, clientIndex) {
-    if(clientIndex) {
-      data.appointments.push({ hour, clientIndex: parseInt(clientIndex) });
-    } else {
-      data.appointments = data.appointments.filter(a => a.hour !== hour);
+    // ===================== AGENDA PILATES =====================
+    function renderAgenda() {
+        const mes = document.getElementById('mesAgenda').value;
+        if (!mes) return;
+        const [ano, mesNum] = mes.split('-');
+        const diasNoMes = new Date(ano, mesNum, 0).getDate();
+        const grid = document.getElementById('agendaGrid');
+        grid.innerHTML = '';
+        const horas = [];
+        for (let h = 7; h <= 20; h++) {
+            horas.push(h.toString().padStart(2, '0') + ':00');
+        }
+        // Create header with days
+        let html = '<div class="agenda-grid" style="grid-template-columns: 60px repeat(7,1fr);">';
+        html += '<div></div>';
+        const diasSemana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+        for (let d = 1; d <= diasNoMes; d++) {
+            const date = new Date(ano, mesNum-1, d);
+            const diaSem = diasSemana[date.getDay()];
+            html += <div style="font-weight:bold;text-align:center;">${d}<br>${diaSem}</div>;
+        }
+        html += '</div>';
+        // For each hour
+        horas.forEach(hora => {
+            html += '<div class="agenda-grid" style="grid-template-columns: 60px repeat(7,1fr);">';
+            html += <div style="font-weight:bold;">${hora}</div>;
+            for (let d = 1; d <= diasNoMes; d++) {
+                const key = ${mes}-${hora}-${d};
+                const slot = agendaPilates[key] || [];
+                let content = '';
+                for (let v = 0; v < 7; v++) {
+                    const aluno = slot[v] ? getAlunoById(slot[v]) : null;
+                    const name = aluno ? (aluno.apelido || aluno.nome) : '';
+                    content += <div style="border-bottom:1px solid #eee; padding:2px;">${name}</div>;
+                }
+                html += <div class="agenda-slot" data-key="${key}">${content}</div>;
+            }
+            html += '</div>';
+        });
+        grid.innerHTML = html;
+
+        // Make slots editable
+        document.querySelectorAll('.agenda-slot').forEach(slot => {
+            slot.addEventListener('click', function() {
+                const key = this.dataset.key;
+                const vagas = agendaPilates[key] || Array(7).fill('');
+                // Simple prompt to add/remove student
+                const action = prompt('Digite o ID do aluno para adicionar (ou deixe vazio para remover o ultimo):');
+                if (action === null) return;
+                if (action.trim() === '') {
+                    vagas.pop();
+                } else {
+                    if (vagas.length < 7) {
+                        vagas.push(action.trim());
+                    } else {
+                        alert('Vagas lotadas!');
+                    }
+                }
+                agendaPilates[key] = vagas.filter(v => v !== '');
+                saveData();
+                renderAgenda();
+            });
+        });
     }
-    saveData();
-  };
 
-  // ===== RECIBO =====
-  function reciboView() {
-    return `<h2>Recibo</h2>
-      <form id="reciboForm">
-        <label>Cliente: <select id="reciboClient">${data.clients.map((c,i)=><option value="${i}">${c.nome}</option>).join('')}</select></label>
-        <label>Serviços adicionais:
-          <input type="checkbox" value="Camisa">Camisa
-          <input type="checkbox" value="Meia">Meia
-          <input type="checkbox" value="Fisioterapia">Fisioterapia
-        </label>
-        <input type="date" id="pagamentoData" placeholder="Dia do pagamento">
-        <textarea id="observacoes" placeholder="Observações"></textarea>
-        <button type="submit">Gerar Recibo</button>
-      </form>`;
-  }
+    document.getElementById('mesAgenda').addEventListener('change', renderAgenda);
 
-  function attachRecibo() {
+    function salvarAgenda() {
+        alert('Agenda salva!');
+    }
+
+    // ===================== RECIBO =====================
     document.getElementById('reciboForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let clientIndex = document.getElementById('reciboClient').value;
-      let servicos = [];
-      document.querySelectorAll('#reciboForm input[type=checkbox]:checked').forEach(el => servicos.push(el.value));
-      let pagamentoData = document.getElementById('pagamentoData').value;
-      let obs = document.getElementById('observacoes').value;
-      let textoRecibo = Recibo - ${data.clients[clientIndex].nome}\nServiços: ${servicos.join(', ')}\nData Pagamento: ${pagamentoData}\nObs: ${obs}\nObrigado pela confiança!!;
-      window.open('','_blank').document.write(<pre>${textoRecibo}</pre>);
+        e.preventDefault();
+        const alunoId = document.getElementById('selectAlunoRecibo').value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const aluno = getAlunoById(alunoId);
+        const servicos = Array.from(document.querySelectorAll('.servicos:checked')).map(cb => cb.value).join(', ');
+        const dia = document.getElementById('diaPagamento').value;
+        const obs = document.getElementById('observacoesRecibo').value;
+        const msg = document.getElementById('mensagemRecibo').value;
+
+        const reciboHTML = `
+            <h3>Recibo - Academia Fisio Corpus</h3>
+            <p><strong>Aluno:</strong> ${aluno.nome}</p>
+            <p><strong>Serviços:</strong> ${servicos || 'Nenhum'}</p>
+            <p><strong>Dia do Pagamento:</strong> ${dia}</p>
+            <p><strong>Observações:</strong> ${obs}</p>
+            <p style="font-style:italic;">${msg}</p>
+        `;
+        document.getElementById('reciboOutput').innerHTML = reciboHTML;
     });
-  }
 
-  // ===== FINANCEIRO =====
-  function financeiroView() {
-    return `<h2>Financeiro</h2>
-      <select id="finClient">${data.clients.map((c,i)=><option value="${i}">${c.nome}</option>).join('')}</select>
-      <button onclick="addPayment()">Registrar Pagamento (R$${data.clients[0]?.preco || 100})</button>
-      <div id="finHistory">
-        ${data.finances.map(f=><div>${data.clients[f.clientIndex]?.nome || 'Desconhecido'} - R$${f.amount} - ${f.date}</div>).join('')}
-      </div>`;
-  }
+    // ===================== FINANCEIRO =====================
+    function renderFinanceiro() {
+        const mes = document.getElementById('mesFinanceiro').value;
+        const tbody = document.querySelector('#tabelaFinanceiro tbody');
+        tbody.innerHTML = '';
+        if (!financeiro[mes]) financeiro[mes] = {};
+        alunos.forEach(aluno => {
+            const pag = financeiro[mes][aluno.id] || 'NaoPago';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${aluno.nome}</td>
+                <td class="${pag === 'Pago' ? 'green' : 'red'}">${pag === 'Pago' ? 'PAGOU' : 'NÃO PAGOU'}</td>
+                <td><button class="btn btn-success" onclick="alterarPagamento('${mes}','${aluno.id}','Pago')">Pago</button>
+                    <button class="btn btn-danger" onclick="alterarPagamento('${mes}','${aluno.id}','NaoPago')">Não Pago</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+        // Historico
+        const histDiv = document.getElementById('historicoFinanceiro');
+        let histHTML = '<table><thead><tr><th>Mês</th><th>Aluno</th><th>Status</th></tr></thead><tbody>';
+        for (let m in financeiro) {
+            for (let id in financeiro[m]) {
+                const aluno = getAlunoById(id);
+                const status = financeiro[m][id];
+                if (aluno) {
+                    histHTML += <tr><td>${m}</td><td>${aluno.nome}</td><td class="${status === 'Pago' ? 'green' : 'red'}">${status === 'Pago' ? 'PAGOU' : 'NÃO PAGOU'}</td></tr>;
+                }
+            }
+        }
+        histHTML += '</tbody></table>';
+        histDiv.innerHTML = histHTML;
+    }
 
-  window.addPayment = function() {
-    let clientIndex = document.getElementById('finClient').value;
-    let amount = data.clients[clientIndex].preco;
-    let date = new Date().toLocaleDateString();
-    data.finances.push({ clientIndex: parseInt(clientIndex), amount, date });
-    saveData();
-    showView('financeiro');
-  };
+    function alterarPagamento(mes, alunoId, status) {
+        if (!financeiro[mes]) financeiro[mes] = {};
+        financeiro[mes][alunoId] = status;
+        saveData();
+        renderFinanceiro();
+    }
 
-  // ===== EVOLUÇÃO =====
-  function evolucaoView() {
-    return `<h2>Evolução</h2>
-      <form id="evolForm">
-        <label>Cliente: <select id="evolClient">${data.clients.map((c,i)=><option value="${i}">${c.nome}</option>).join('')}</select></label>
-        <p>Checkboxes:
-          <input type="checkbox" value="Melhora flexibilidade">Flexibilidade
-          <input type="checkbox" value="Melhora força">Força
-        </p>
-        <label>Estado Geral:
-          <select id="estadoGeral">
-            <option>BEG</option>
-            <option>MEG</option>
-            <option>REG</option>
-          </select>
-        </label>
-        <textarea id="relato" placeholder="Relato"></textarea>
-        <button type="submit">Salvar Evolução</button>
-      </form>
-      <div id="evolHistory"></div>`;
-  }
+    document.getElementById('mesFinanceiro').addEventListener('change', renderFinanceiro);
 
-  function attachEvolucao() {
-    document.getElementById('evolForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let clientIndex = document.getElementById('evolClient').value;
-      let checkboxes = [];
-      document.querySelectorAll('#evolForm input[type=checkbox]:checked').forEach(el => checkboxes.push(el.value));
-      let estado = document.getElementById('estadoGeral').value;
-      let relato = document.getElementById('relato').value;
-      data.evolutions.push({ clientIndex: parseInt(clientIndex), checkboxes, estado, relato, date: new Date().toISOString() });
-      saveData();
-      showView('evolucao');
+    function salvarFinanceiro() {
+        alert('Financeiro salvo!');
+    }
+
+    // ===================== EVOLUÇÃO =====================
+    function salvarEvolucao() {
+        const alunoId = document.getElementById('selectAlunoEvolucao').value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const prontas = Array.from(document.querySelectorAll('.evolucao-pronta:checked')).map(cb => cb.value);
+        const estado = document.getElementById('estadoGeral').value;
+        const relato = document.getElementById('relatoEvolucao').value;
+        if (!relato.trim()) { alert('Relato é obrigatório'); return; }
+        if (!evolucoes[alunoId]) evolucoes[alunoId] = [];
+        evolucoes[alunoId].push({ data: new Date().toISOString(), prontas, estado, relato });
+        saveData();
+        alert('Evolução salva!');
+        exibirEvolucoes(alunoId);
+        document.getElementById('relatoEvolucao').value = '';
+    }
+
+    function exibirEvolucoes(alunoId) {
+        const div = document.getElementById('evolucoesSalvas');
+        const evos = evolucoes[alunoId] || [];
+        div.innerHTML = '<h4>Evoluções registradas:</h4>';
+        evos.forEach(evo => {
+            div.innerHTML += `
+                <div style="border:1px solid #ccc; margin:5px 0; padding:5px;">
+                    <strong>Data:</strong> ${new Date(evo.data).toLocaleString()}<br>
+                    <strong>Evoluções prontas:</strong> ${evo.prontas.join(', ') || 'Nenhuma'}<br>
+                    <strong>Estado Geral:</strong> ${evo.estado}<br>
+                    <strong>Relato:</strong> ${evo.relato}
+                </div>
+            `;
+        });
+    }
+
+    document.getElementById('selectAlunoEvolucao').addEventListener('change', function() {
+        exibirEvolucoes(this.value);
     });
-  }
 
-  // ===== FISIOTERAPIA =====
-  function fisioView() {
-    return `<h2>Fisioterapia</h2>
-      <select id="tipoFisio">
-        <option value="fisioterapia">Fisioterapia</option>
-        <option value="quiropraxia">Quiropraxia</option>
-        <option value="rpg">RPG</option>
-      </select>
-      <button onclick="showFisioSub()">Gerenciar</button>
-      <div id="fisioContent"></div>`;
-  }
+    function printEvolucao() {
+        const alunoId = document.getElementById('selectAlunoEvolucao').value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const aluno = getAlunoById(alunoId);
+        const evos = evolucoes[alunoId] || [];
+        let html = <html><head><title>Evoluções - ${aluno.nome}</title><style>body{font-family:Arial;padding:20px;}h2{text-align:center;}</style></head><body><h2>Evoluções de ${aluno.nome}</h2>;
+        evos.forEach(evo => {
+            html += <div style="border:1px solid #000;margin:10px 0;padding:10px;"><strong>Data:</strong> ${new Date(evo.data).toLocaleString()}<br><strong>Evoluções prontas:</strong> ${evo.prontas.join(', ') || 'Nenhuma'}<br><strong>Estado Geral:</strong> ${evo.estado}<br><strong>Relato:</strong> ${evo.relato}</div>;
+        });
+        html += '</body></html>';
+        const win = window.open('','_blank');
+        win.document.write(html);
+        win.document.close();
+        win.print();
+    }
 
-  function attachFisio() {
-    // Simplified - only shows structure
-    window.showFisioSub = function() {
-      document.getElementById('fisioContent').innerHTML = `
-        <h3>Sub-campo</h3>
-        <p>Funcionalidades: ficha, dias, declaração, comparecimento, procedimentos (Ventosa, Agulhamento, Outro), pagamento, evolução.</p>
-        <p>Agenda única 07-20h, 7 vagas (compartilhada com Pilates? Aqui separada).</p>
-      `;
-    };
-  }
+    // ===================== DECLARAÇÃO =====================
+    function printDeclaracao() {
+        const alunoId = document.getElementById('selectAlunoDeclaracao').value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const aluno = getAlunoById(alunoId);
+        let texto = document.getElementById('textoDeclaracao').value;
+        texto = texto.replace('[NOME]', aluno.nome);
+        const win = window.open('','_blank');
+        win.document.write(<html><head><title>Declaração</title><style>body{font-family:Arial;padding:40px;}h2{text-align:center;}p{font-size:1.1em;line-height:1.5;}</style></head><body><h2>Declaração</h2><p>${texto}</p><br><br><p style="text-align:right;">Dr. Responsável</p></body></html>);
+        win.document.close();
+        win.print();
+    }
 
-  // ===== MAPA DE VIEWS =====
-  const views = {
-    cadastro: cadastroView,
-    avaliacao: avaliacaoView,
-    agenda: agendaView,
-    recibo: reciboView,
-    financeiro: financeiroView,
-    evolucao: evolucaoView,
-    fisio: fisioView
-  };
+    // ===================== FISIOTERAPIA =====================
+    function populateFisioSelects() {
+        document.querySelectorAll('.selectAlunoFisio').forEach(sel => {
+            populateAlunosSelect(sel);
+        });
+    }
 
-  const handlers = {
-    cadastro: attachCadastro,
-    avaliacao: attachAvaliacao,
-    recibo: attachRecibo,
-    evolucao: attachEvolucao,
-    fisio: attachFisio
-  };
+    function salvarFisio(tipo) {
+        const sel = document.querySelector(#sub-${tipo} .selectAlunoFisio);
+        const alunoId = sel.value;
+        if (!alunoId) { alert('Selecione um aluno'); return; }
+        const dias = Array.from(document.querySelectorAll(#sub-${tipo} .dias-fisio:checked)).map(cb => cb.value);
+        const procedimentos = Array.from(document.querySelectorAll(#sub-${tipo} .procedimentos-fisio:checked)).map(cb => cb.value);
+        const outros = document.querySelector(#sub-${tipo} .outro-procedimento-fisio).value.trim();
+        if (outros) procedimentos.push('Outro: ' + outros);
+        const comparecimento = document.querySelector(#sub-${tipo} .comparecimento-fisio).value;
+        const pagamento = document.querySelector(#sub-${tipo} .pagamento-fisio).value;
+        const evolucao = document.querySelector(#sub-${tipo} .evolucao-fisio).value;
+        if (!fisioData[tipo]) fisioData[tipo] = {};
+        fisioData[tipo][alunoId] = { dias, procedimentos, comparecimento, pagamento, evolucao };
+        saveData();
+        alert('Dados de ' + tipo.charAt(0).toUpperCase() + tipo.slice(1) + ' salvos!');
+    }
 
-  function attachHandlers(view) {
-    if(handlers[view]) handlers[view]();
-  }
+    function renderAgendaFisio() {
+        const mes = document.getElementById('mesAgendaFisio').value;
+        if (!mes) return;
+        const [ano, mesNum] = mes.split('-');
+        const diasNoMes = new Date(ano, mesNum, 0).getDate();
+        const grid = document.getElementById('agendaFisioGrid');
+        grid.innerHTML = '';
+        const horas = [];
+        for (let h = 7; h <= 20; h++) {
+            horas.push(h.toString().padStart(2, '0') + ':00');
+        }
+        let html = '<div class="agenda-grid" style="grid-template-columns: 60px repeat(7,1fr);">';
+        html += '<div></div>';
+        const diasSemana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+        for (let d = 1; d <= diasNoMes; d++) {
+            const date = new Date(ano, mesNum-1, d);
+            const diaSem = diasSemana[date.getDay()];
+            html += <div style="font-weight:bold;text-align:center;">${d}<br>${diaSem}</div>;
+        }
+        html += '</div>';
+        horas.forEach(hora => {
+            html += '<div class="agenda-grid" style="grid-template-columns: 60px repeat(7,1fr);">';
+            html += <div style="font-weight:bold;">${hora}</div>;
+            for (let d = 1; d <= diasNoMes; d++) {
+                const key = ${mes}-${hora}-${d};
+                const slot = agendaFisio[key] || [];
+                let content = '';
+                for (let v = 0; v < 7; v++) {
+                    const aluno = slot[v] ? getAlunoById(slot[v]) : null;
+                    const name = aluno ? (aluno.apelido || aluno.nome) : '';
+                    content += <div style="border-bottom:1px solid #eee; padding:2px;">${name}</div>;
+                }
+                html += <div class="agenda-slot" data-key="${key}">${content}</div>;
+            }
+            html += '</div>';
+        });
+        grid.innerHTML = html;
 
-  // Inicializar
-  showView('cadastro');
+        document.querySelectorAll('#agendaFisioGrid .agenda-slot').forEach(slot => {
+            slot.addEventListener('click', function() {
+                const key = this.dataset.key;
+                let vagas = agendaFisio[key] || [];
+                const action = prompt('Digite o ID do aluno para adicionar (ou deixe vazio para remover o ultimo):');
+                if (action === null) return;
+                if (action.trim() === '') {
+                    vagas.pop();
+                } else {
+                    if (vagas.length < 7) {
+                        vagas.push(action.trim());
+                    } else {
+                        alert('Vagas lotadas!');
+                    }
+                }
+                agendaFisio[key] = vagas.filter(v => v !== '');
+                saveData();
+                renderAgendaFisio();
+            });
+        });
+    }
 
-  // Export phoneMask globally
-  window.phoneMask = phoneMask;
-})();
-  </div>
+    document.getElementById('mesAgendaFisio').addEventListener('change', renderAgendaFisio);
+
+    function salvarAgendaFisio() {
+        alert('Agenda de Fisioterapia salva!');
+    }
+
+    // ===================== INIT =====================
+    renderAlunos();
+    populateAlunosSelect(document.getElementById('selectAlunoFicha'));
+    populateAlunosSelect(document.getElementById('selectAlunoRecibo'));
+    populateAlunosSelect(document.getElementById('selectAlunoEvolucao'));
+    populateAlunosSelect(document.getElementById('selectAlunoDeclaracao'));
+    populateFisioSelects();
+    renderAgenda();
+    renderFinanceiro();
+    renderAgendaFisio();
+</script>
 </body>
 </html>
