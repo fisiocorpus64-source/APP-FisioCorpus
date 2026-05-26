@@ -6,680 +6,535 @@
 <title>Fisio Corpus</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; background: #f5f5f5; }
-#loginScreen { display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-#loginBox { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
-#loginBox h1 { margin-bottom: 20px; color: #333; }
-#loginBox input { display: block; width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; }
-#loginBox button { width: 100%; padding: 10px; background: #667eea; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-#loginBox button:hover { background: #5a67d8; }
-#loginError { color: red; margin-top: 10px; }
+body { font-family: Arial, sans-serif; background: #f4f4f4; }
+#login { display: flex; justify-content: center; align-items: center; height: 100vh; background: #2c3e50; }
+#login div { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.2); width: 300px; }
+#login h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+#login input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+#login button { width: 100%; padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+#login button:hover { background: #219150; }
 #app { display: none; }
-#header { background: #2d3748; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
-#header h2 { margin: 0; }
-#logout { background: #e53e3e; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
-#tabs { display: flex; background: #edf2f7; border-bottom: 2px solid #e2e8f0; }
-.tab { padding: 10px 20px; cursor: pointer; border: none; background: none; font-size: 14px; font-weight: bold; color: #4a5568; }
-.tab.active { background: white; color: #2b6cb0; border-bottom: 3px solid #2b6cb0; }
-.tab:hover { background: #e2e8f0; }
-.tabContent { display: none; padding: 20px; }
-.tabContent.active { display: block; }
-.card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-h3 { margin-bottom: 15px; color: #2d3748; }
-label { display: block; margin-top: 10px; font-weight: bold; }
-input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; }
-button { background: #4299e1; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px; margin-top: 10px; }
-button:hover { background: #3182ce; }
-.btn-danger { background: #e53e3e; }
-.btn-success { background: #48bb78; }
+.tabs { display: flex; flex-wrap: wrap; background: #2c3e50; padding: 10px 10px 0; }
+.tab { padding: 10px 15px; background: #34495e; color: white; cursor: pointer; margin-right: 4px; margin-bottom: 4px; border-radius: 4px 4px 0 0; user-select: none; }
+.tab.active { background: #ecf0f1; color: #2c3e50; }
+.tab-content { display: none; padding: 20px; background: white; }
+.tab-content.active { display: block; }
+h3 { margin-bottom: 15px; color: #2c3e50; }
+label { display: block; margin: 8px 0 4px; }
+input, select, textarea, button { width: 100%; padding: 8px; margin: 4px 0; border: 1px solid #ccc; border-radius: 4px; }
+button { background: #27ae60; color: white; border: none; cursor: pointer; }
+button:hover { background: #219150; }
+.btn-danger { background: #e74c3c; }
+.btn-danger:hover { background: #c0392b; }
 table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
-th { background: #edf2f7; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
+th { background: #2c3e50; color: white; }
+canvas { border: 1px solid #ccc; background: white; display: block; margin: 8px 0; width: 100%; height: 150px; }
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.checkbox-group label { display: inline-flex; align-items: center; gap: 4px; width: auto; }
 .status-ativo { color: green; font-weight: bold; }
 .status-inativo { color: red; font-weight: bold; }
 .pago { color: green; }
 .nao-pago { color: red; }
-canvas { border: 1px solid #ccc; display: block; margin-top: 5px; }
-.checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-.checkbox-group label { font-weight: normal; display: inline; }
-@media print { body * { visibility: hidden; } .print-area, .print-area * { visibility: visible; } .print-area { position: absolute; left: 0; top: 0; width: 58mm; } }
+@media print { .tabs, .tab, #app button:not(.btn-print) { display: none; } .tab-content { display: block !important; } }
 </style>
 </head>
 <body>
-<div id="loginScreen">
-  <div id="loginBox">
-    <h1>Fisio Corpus</h1>
-    <input type="password" id="password" placeholder="Senha" />
-    <button onclick="login()">Entrar</button>
-    <p id="loginError"></p>
-  </div>
+<div id="login">
+<div>
+<h2>Fisio Corpus</h2>
+<p>Digite a senha:</p>
+<input type="password" id="passwordInput" placeholder="Senha">
+<button onclick="login()">Entrar</button>
+<p id="loginError" style="color: red; display: none;">Senha incorreta.</p>
 </div>
+</div>
+
 <div id="app">
-  <div id="header">
-    <h2>Fisio Corpus</h2>
-    <button id="logout" onclick="logout()">Sair</button>
-  </div>
-  <div id="tabs">
-    <button class="tab active" onclick="switchTab('alunos')">Alunos</button>
-    <button class="tab" onclick="switchTab('ficha')">Ficha</button>
-    <button class="tab" onclick="switchTab('agenda')">Agenda</button>
-    <button class="tab" onclick="switchTab('recibo')">Recibo</button>
-    <button class="tab" onclick="switchTab('financeiro')">Financeiro</button>
-    <button class="tab" onclick="switchTab('evolucao')">Evolução</button>
-    <button class="tab" onclick="switchTab('autorizacao')">Autorização</button>
-    <button class="tab" onclick="switchTab('fisioterapia')">Fisioterapia</button>
-  </div>
-  <div id="alunos" class="tabContent active">
-    <div class="card">
-      <h3>Cadastro de Aluno</h3>
-      <label>Nome: <input type="text" id="alunoNome" /></label>
-      <label>Apelido: <input type="text" id="alunoApelido" /></label>
-      <label>Telefone: <input type="text" id="alunoTelefone" placeholder="(99) 99999-9999" oninput="formatPhone(this)" /></label>
-      <label>Email (opcional): <input type="email" id="alunoEmail" /></label>
-      <label>Dias de Pilates:</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" class="dias" value="Seg" /> Seg</label>
-        <label><input type="checkbox" class="dias" value="Ter" /> Ter</label>
-        <label><input type="checkbox" class="dias" value="Qua" /> Qua</label>
-        <label><input type="checkbox" class="dias" value="Qui" /> Qui</label>
-        <label><input type="checkbox" class="dias" value="Sex" /> Sex</label>
-        <label><input type="checkbox" class="dias" value="Sab" /> Sab</label>
-        <label><input type="checkbox" class="dias" value="Dom" /> Dom</label>
-      </div>
-      <label>Mensalidade:
-        <select id="alunoMensalidade">
-          <option value="100">1x - R$100</option>
-          <option value="140">2x - R$140</option>
-          <option value="170">3x - R$170</option>
-        </select>
-      </label>
-      <label>Status:
-        <select id="alunoStatus">
-          <option value="ativo">Ativo</option>
-          <option value="inativo">Inativo</option>
-        </select>
-      </label>
-      <button onclick="salvarAluno()">Salvar Aluno</button>
-      <p id="alunoMsg" style="color: green;"></p>
-    </div>
-    <div class="card">
-      <h3>Alunos Cadastrados</h3>
-      <table id="tabelaAlunos">
-        <tr><th>Nome</th><th>Apelido</th><th>Telefone</th><th>Dias</th><th>Mensalidade</th><th>Status</th><th>Ações</th></tr>
-      </table>
-    </div>
-  </div>
-  <div id="ficha" class="tabContent">
-    <div class="card">
-      <h3>Ficha de Avaliação</h3>
-      <label>Selecionar Aluno:
-        <select id="fichaAluno"></select>
-      </label>
-      <label>CPF: <input type="text" id="fichaCPF" /></label>
-      <label>Já fez Pilates? <input type="text" id="fichaPilates" /></label>
-      <label>Erro Postural:</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" class="erro" value="Cifose" /> Cifose</label>
-        <label><input type="checkbox" class="erro" value="Lordose" /> Lordose</label>
-        <label><input type="checkbox" class="erro" value="Escoliose" /> Escoliose</label>
-        <label><input type="checkbox" class="erro" value="Ombros caídos" /> Ombros caídos</label>
-        <label><input type="checkbox" class="erro" value="Outro" /> Outro</label>
-      </div>
-      <label>Assinatura:</label>
-      <canvas id="sigCanvas" width="300" height="100"></canvas>
-      <button onclick="clearCanvas()">Limpar</button>
-      <label>Autorização de Imagem: <input type="checkbox" id="fichaAutorizacao" /></label>
-      <button onclick="salvarFicha()">Salvar Ficha</button>
-      <p id="fichaMsg" style="color: green;"></p>
-    </div>
-  </div>
-  <div id="agenda" class="tabContent">
-    <div class="card">
-      <h3>Agenda Pilates</h3>
-      <label>Mês: <input type="month" id="agendaMes" /></label>
-      <label>Aluno: <select id="agendaAluno"></select></label>
-      <label>Horário: <select id="agendaHorario"></select></label>
-      <button onclick="adicionarAgenda()">Agendar</button>
-      <p id="agendaMsg" style="color: green;"></p>
-      <table id="tabelaAgenda">
-        <tr><th>Data</th><th>Aluno</th><th>Horário</th></tr>
-      </table>
-    </div>
-  </div>
-  <div id="recibo" class="tabContent">
-    <div class="card">
-      <h3>Recibo</h3>
-      <label>Aluno: <select id="reciboAluno"></select></label>
-      <label>Serviços Adicionais:
-        <select id="reciboServico">
-          <option value="0">Nenhum</option>
-          <option value="30">Camisa R$30</option>
-          <option value="15">Meia R$15</option>
-          <option value="80">Fisioterapia R$80</option>
-        </select>
-      </label>
-      <label>Dia Pagamento: <input type="date" id="reciboData" /></label>
-      <label>Observações: <textarea id="reciboObs"></textarea></label>
-      <button onclick="gerarRecibo()">Gerar Recibo</button>
-      <div id="reciboPreview" class="print-area"></div>
-    </div>
-  </div>
-  <div id="financeiro" class="tabContent">
-    <div class="card">
-      <h3>Financeiro</h3>
-      <table id="tabelaFinanceiro">
-        <tr><th>Aluno</th><th>Mês</th><th>Valor</th><th>Status</th></tr>
-      </table>
-    </div>
-  </div>
-  <div id="evolucao" class="tabContent">
-    <div class="card">
-      <h3>Evolução</h3>
-      <label>Aluno: <select id="evolAluno"></select></label>
-      <label>Data: <input type="date" id="evolData" /></label>
-      <label>Checkboxes:</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" id="evolMelhora" /> Melhora dor</label>
-        <label><input type="checkbox" id="evolAmplitude" /> Aumento amplitude</label>
-        <label><input type="checkbox" id="evolConsciencia" /> Maior consciência corporal</label>
-      </div>
-      <label>Estado Geral:
-        <select id="evolEstado">
-          <option value="BEG">BEG</option>
-          <option value="MEG">MEG</option>
-          <option value="REG">REG</option>
-        </select>
-      </label>
-      <label>Relato: <textarea id="evolRelato"></textarea></label>
-      <button onclick="salvarEvolucao()">Salvar Evolução</button>
-      <button onclick="imprimirEvolucao()">Imprimir</button>
-      <p id="evolMsg" style="color: green;"></p>
-    </div>
-  </div>
-  <div id="autorizacao" class="tabContent">
-    <div class="card">
-      <h3>Autorização de Imagem</h3>
-      <label>Aluno: <select id="autAluno"></select></label>
-      <button onclick="gerarAutorizacao()">Gerar Declaração</button>
-      <div id="autPreview" class="print-area"></div>
-      <button onclick="imprimirAutorizacao()">Imprimir</button>
-    </div>
-  </div>
-  <div id="fisioterapia" class="tabContent">
-    <div class="card">
-      <h3>Fisioterapia</h3>
-      <label>Tipo:
-        <select id="fisioTipo">
-          <option value="Fisioterapia">Fisioterapia</option>
-          <option value="Quiropraxia">Quiropraxia</option>
-          <option value="RPG">RPG</option>
-        </select>
-      </label>
-      <label>Aluno: <select id="fisioAluno"></select></label>
-      <label>Data: <input type="date" id="fisioData" /></label>
-      <label>Horário: <select id="fisioHorario"></select></label>
-      <label>Procedimentos:</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" id="fisioVentosa" /> Ventosa</label>
-        <label><input type="checkbox" id="fisioAgulhamento" /> Agulhamento</label>
-        <label><input type="checkbox" id="fisioOutro" /> Outro</label>
-      </div>
-      <label>Comparecimento: <input type="checkbox" id="fisioCompareceu" /></label>
-      <label>Evolução: <textarea id="fisioEvolucao"></textarea></label>
-      <button onclick="salvarFisioterapia()">Salvar</button>
-      <p id="fisioMsg" style="color: green;"></p>
-      <h3>Agenda Fisioterapia</h3>
-      <table id="tabelaFisio">
-        <tr><th>Data</th><th>Aluno</th><th>Horário</th><th>Tipo</th></tr>
-      </table>
-    </div>
-  </div>
+<div class="tabs">
+<div class="tab active" onclick="showTab(0)">Alunos</div>
+<div class="tab" onclick="showTab(1)">Ficha</div>
+<div class="tab" onclick="showTab(2)">Agenda</div>
+<div class="tab" onclick="showTab(3)">Recibo</div>
+<div class="tab" onclick="showTab(4)">Financeiro</div>
+<div class="tab" onclick="showTab(5)">Evolução</div>
+<div class="tab" onclick="showTab(6)">Autorização</div>
+<div class="tab" onclick="showTab(7)">Fisioterapia</div>
 </div>
+
+<div class="tab-content active" id="tab0">
+<h3>Cadastro de Alunos</h3>
+<form id="alunoForm">
+<label>Nome:</label>
+<input type="text" id="alunoNome" required>
+<label>Apelido:</label>
+<input type="text" id="alunoApelido">
+<label>Telefone:</label>
+<input type="tel" id="alunoTelefone" placeholder="(XX) XXXXX-XXXX" oninput="formatPhone(this)">
+<label>Email:</label>
+<input type="email" id="alunoEmail">
+<label>Dias de Pilates:</label>
+<div class="checkbox-group" id="diasContainer">
+<label><input type="checkbox" value="Segunda"> Seg</label>
+<label><input type="checkbox" value="Terça"> Ter</label>
+<label><input type="checkbox" value="Quarta"> Qua</label>
+<label><input type="checkbox" value="Quinta"> Qui</label>
+<label><input type="checkbox" value="Sexta"> Sex</label>
+<label><input type="checkbox" value="Sábado"> Sáb</label>
+<label><input type="checkbox" value="Domingo"> Dom</label>
+</div>
+<label>Mensalidade:</label>
+<select id="alunoMensalidade">
+<option value="1">1x por semana - R$100</option>
+<option value="2">2x por semana - R$140</option>
+<option value="3">3x por semana - R$170</option>
+</select>
+<label>Status:</label>
+<select id="alunoStatus">
+<option value="Ativo">Ativo</option>
+<option value="Inativo">Inativo</option>
+</select>
+<button type="submit">Salvar</button>
+</form>
+<h3>Alunos Cadastrados</h3>
+<table id="alunosTable">
+<thead>
+<tr><th>Nome</th><th>Apelido</th><th>Telefone</th><th>Status</th><th>Ações</th></tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div class="tab-content" id="tab1">
+<h3>Ficha de Avaliação</h3>
+<form id="fichaForm">
+<label>Selecione o Aluno:</label>
+<select id="fichaAluno"></select>
+<label>CPF:</label>
+<input type="text" id="fichaCPF" oninput="formatCPF(this)">
+<label>Já fez pilates?</label>
+<select id="fichaJaFez"><option value="Sim">Sim</option><option value="Não">Não</option></select>
+<label>Erros Posturais:</label>
+<div class="checkbox-group">
+<label><input type="checkbox" value="Cifose"> Cifose</label>
+<label><input type="checkbox" value="Lordose"> Lordose</label>
+<label><input type="checkbox" value="Escoliose"> Escoliose</label>
+<label><input type="checkbox" value="Anteriorização de ombros"> Ombro anteriorizado</label>
+<label><input type="checkbox" value="Protrusão de cabeça"> Protrusão cabeça</label>
+</div>
+<label>Assinatura:</label>
+<canvas id="canvasFicha" width="400" height="150"></canvas>
+<button type="button" onclick="clearCanvas('canvasFicha')">Limpar Assinatura</button>
+<label><input type="checkbox" id="fichaAutorizacao"> Autorização de imagem</label>
+<button type="submit">Salvar Ficha</button>
+</form>
+</div>
+
+<div class="tab-content" id="tab2">
+<h3>Agenda Pilates</h3>
+<label>Mês:</label>
+<select id="agendaMes">
+<option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option><option value="4">Maio</option><option value="5">Junho</option><option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option>
+</select>
+<label>Aluno:</label>
+<select id="agendaAluno"></select>
+<label>Horário:</label>
+<select id="agendaHorario">
+<option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option>
+</select>
+<button onclick="agendar()">Agendar</button>
+<h3>Agendados</h3>
+<table id="agendaTable"><thead><tr><th>Aluno</th><th>Horário</th><th>Vaga</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="tab-content" id="tab3">
+<h3>Recibo</h3>
+<form id="reciboForm">
+<label>Aluno:</label>
+<select id="reciboAluno"></select>
+<label>Serviços Adicionais:</label>
+<div class="checkbox-group">
+<label><input type="checkbox" value="Camisa" data-preco="30"> Camisa R$30</label>
+<label><input type="checkbox" value="Meia" data-preco="15"> Meia R$15</label>
+<label><input type="checkbox" value="Fisioterapia" data-preco="80"> Fisioterapia R$80</label>
+</div>
+<label>Data de Pagamento:</label>
+<input type="date" id="reciboData">
+<label>Observações:</label>
+<textarea id="reciboObs"></textarea>
+<button type="button" onclick="gerarRecibo()">Gerar Recibo</button>
+</form>
+<div id="reciboOutput" style="margin-top:15px;"></div>
+<button onclick="imprimirRecibo()" class="btn-print">Imprimir Recibo (58mm)</button>
+</div>
+
+<div class="tab-content" id="tab4">
+<h3>Financeiro</h3>
+<table id="financeiroTable"><thead><tr><th>Aluno</th><th>Mensalidade</th><th>Status</th></tr></thead><tbody></tbody></table>
+</div>
+
+<div class="tab-content" id="tab5">
+<h3>Evolução</h3>
+<form id="evolucaoForm">
+<label>Aluno:</label>
+<select id="evolAluno"></select>
+<label>Data:</label>
+<input type="date" id="evolData">
+<label>Aspectos:</label>
+<div class="checkbox-group">
+<label><input type="checkbox" value="Melhora dor"> Melhora dor</label>
+<label><input type="checkbox" value="Aumento amplitude"> Aumento amplitude</label>
+<label><input type="checkbox" value="Consciência corporal"> Consciência corporal</label>
+</div>
+<label>Estado:</label>
+<select id="evolEstado"><option>BEG</option><option>MEG</option><option>REG</option></select>
+<label>Relato:</label>
+<textarea id="evolRelato"></textarea>
+<button type="submit">Salvar</button>
+</form>
+</div>
+
+<div class="tab-content" id="tab6">
+<h3>Autorização de Uso de Imagem</h3>
+<p id="autorizacaoTexto">Eu, __________, autorizo o uso de minha imagem para fins de divulgação institucional.</p>
+<button onclick="imprimirAutorizacao()" class="btn-print">Imprimir Autorização</button>
+</div>
+
+<div class="tab-content" id="tab7">
+<h3>Fisioterapia</h3>
+<label>Tipo:</label>
+<select id="fisioTipo">
+<option>Fisioterapia</option>
+<option>Quiropraxia</option>
+<option>RPG</option>
+</select>
+<label>Mês:</label>
+<select id="fisioMes">
+<option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option><option value="4">Maio</option><option value="5">Junho</option><option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option>
+</select>
+<label>Horário:</label>
+<select id="fisioHorario">
+<option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option>
+</select>
+<label>Procedimentos:</label>
+<div class="checkbox-group">
+<label><input type="checkbox" value="Ventosa"> Ventosa</label>
+<label><input type="checkbox" value="Agulhamento"> Agulhamento</label>
+<label><input type="checkbox" value="Outro"> Outro</label>
+</div>
+<label>Comparecimento:</label>
+<select id="fisioCompareceu"><option value="Sim">Sim</option><option value="Não">Não</option></select>
+<label>Evolução:</label>
+<textarea id="fisioEvolucao"></textarea>
+<button onclick="agendarFisio()">Agendar</button>
+<h3>Agenda Fisioterapia</h3>
+<table id="fisioTable"><thead><tr><th>Tipo</th><th>Aluno</th><th>Horário</th><th>Procedimentos</th></tr></thead><tbody></tbody></table>
+</div>
+</div>
+
 <script>
-// Dados iniciais
-let alunos = JSON.parse(localStorage.getItem('fisioAlunos')) || [];
-let fichas = JSON.parse(localStorage.getItem('fisioFichas')) || [];
-let agendas = JSON.parse(localStorage.getItem('fisioAgendas')) || [];
-let financeiro = JSON.parse(localStorage.getItem('fisioFinanceiro')) || [];
-let evolucoes = JSON.parse(localStorage.getItem('fisioEvolucoes')) || [];
-let autorizacoes = JSON.parse(localStorage.getItem('fisioAutorizacoes')) || [];
-let fisioterapias = JSON.parse(localStorage.getItem('fisioFisioterapias')) || [];
+// ===== Variáveis globais =====
+let alunos = JSON.parse(localStorage.getItem('fisio_alunos')) || [];
+let fichas = JSON.parse(localStorage.getItem('fisio_fichas')) || [];
+let agendamentos = JSON.parse(localStorage.getItem('fisio_agendamentos')) || [];
+let recibos = JSON.parse(localStorage.getItem('fisio_recibos')) || [];
+let evolucoes = JSON.parse(localStorage.getItem('fisio_evolucoes')) || [];
+let fisioterapias = JSON.parse(localStorage.getItem('fisio_fisioterapias')) || [];
 
-// function login() {
-    const password = document.getElementById('passwordInput').value;
-    if (password === 'pilates2024') {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        if (typeof init === 'function') init();
-    } else {
-        alert('Senha incorreta!');
-    }
-}
-function logout() {
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('password').value = '';
-  document.getElementById('loginError').innerText = '';
-}
-
-// Tabs
-function switchTab(tabId) {
-  document.querySelectorAll('.tabContent').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  event.target.classList.add('active');
-  if(tabId === 'agenda') preencherAgendaHorarios();
-  if(tabId === 'fisioterapia') preencherFisioHorarios();
-}
-
-// Helpers
-function formatPhone(input) {
-  let value = input.value.replace(/\D/g,'');
-  if (value.length > 11) value = value.slice(0,11);
-  if (value.length > 2) value = '(' + value.slice(0,2) + ') ' + value.slice(2);
-  if (value.length > 10) value = value.slice(0,10) + '-' + value.slice(10);
-  input.value = value;
-}
-
-function getDiasSelecionados() {
-  return Array.from(document.querySelectorAll('.dias:checked')).map(cb => cb.value);
-}
-
-function getErrosSelecionados() {
-  return Array.from(document.querySelectorAll('.erro:checked')).map(cb => cb.value);
-}
-
-function preencherSelectAlunos(selectId, incluirTodos = false) {
-  const sel = document.getElementById(selectId);
-  sel.innerHTML = '';
-  if(incluirTodos) {
-    const opt = document.createElement('option');
-    opt.value = '';
-    opt.text = 'Selecione';
-    sel.appendChild(opt);
+// ===== Login =====
+function login() {
+  const senha = document.getElementById('passwordInput').value;
+  if (senha === 'pilates2024') {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
   }
-  alunos.forEach(a => {
-    const opt = document.createElement('option');
-    opt.value = a.id;
-    opt.text = a.nome;
-    sel.appendChild(opt);
+}
+
+// ===== Abas =====
+function showTab(index) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === index));
+  document.querySelectorAll('.tab-content').forEach((t, i) => t.classList.toggle('active', i === index));
+}
+
+// ===== Utilitários =====
+function formatPhone(input) {
+  let val = input.value.replace(/\D/g,'');
+  if (val.length > 11) val = val.slice(0,11);
+  if (val.length > 6) val = (${val.slice(0,2)}) ${val.slice(2,7)}-${val.slice(7)};
+  else if (val.length > 2) val = (${val.slice(0,2)}) ${val.slice(2)};
+  input.value = val;
+}
+
+function formatCPF(input) {
+  let val = input.value.replace(/\D/g,'');
+  if (val.length > 11) val = val.slice(0,11);
+  if (val.length > 9) val = ${val.slice(0,3)}.${val.slice(3,6)}.${val.slice(6,9)}-${val.slice(9)};
+  else if (val.length > 6) val = ${val.slice(0,3)}.${val.slice(3,6)}.${val.slice(6)};
+  else if (val.length > 3) val = ${val.slice(0,3)}.${val.slice(3)};
+  input.value = val;
+}
+
+function salvar() {
+  localStorage.setItem('fisio_alunos', JSON.stringify(alunos));
+  localStorage.setItem('fisio_fichas', JSON.stringify(fichas));
+  localStorage.setItem('fisio_agendamentos', JSON.stringify(agendamentos));
+  localStorage.setItem('fisio_recibos', JSON.stringify(recibos));
+  localStorage.setItem('fisio_evolucoes', JSON.stringify(evolucoes));
+  localStorage.setItem('fisio_fisioterapias', JSON.stringify(fisioterapias));
+}
+
+function loadData() {
+  preencherSelectAluno();
+  renderAlunos();
+  renderAgenda();
+  renderFinanceiro();
+  renderFisio();
+}
+
+function preencherSelectAluno() {
+  const selects = ['fichaAluno','agendaAluno','reciboAluno','evolAluno'];
+  selects.forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = '<option value="">Selecione</option>';
+    alunos.forEach(a => {
+      sel.innerHTML += <option value="${a.nome}">${a.nome}</option>;
+    });
   });
 }
 
-function gerarId() { return Date.now() + Math.random(); }
-
-function atualizarTabelaAlunos() {
-  const tbody = document.getElementById('tabelaAlunos');
-  tbody.innerHTML = '<tr><th>Nome</th><th>Apelido</th><th>Telefone</th><th>Dias</th><th>Mensalidade</th><th>Status</th><th>Ações</th></tr>';
-  alunos.forEach(a => {
-    const tr = document.createElement('tr');
-    let statusClass = a.status === 'ativo' ? 'status-ativo' : 'status-inativo';
-    tr.innerHTML = <td>${a.nome}</td><td>${a.apelido}</td><td>${a.telefone}</td><td>${a.dias.join(', ')}</td><td>R$${a.mensalidade}</td><td class="${statusClass}">${a.status}</td><td><button onclick="excluirAluno('${a.id}')">Excluir</button></td>;
-    tbody.appendChild(tr);
-  });
-}
-
-function salvarAluno() {
+// ===== Alunos =====
+document.getElementById('alunoForm').addEventListener('submit', function(e) {
+  e.preventDefault();
   const nome = document.getElementById('alunoNome').value.trim();
+  if (!nome) { alert('Nome é obrigatório'); return; }
   const apelido = document.getElementById('alunoApelido').value.trim();
   const telefone = document.getElementById('alunoTelefone').value.trim();
   const email = document.getElementById('alunoEmail').value.trim();
-  const dias = getDiasSelecionados();
+  const dias = [];
+  document.querySelectorAll('#diasContainer input[type="checkbox"]:checked').forEach(c => dias.push(c.value));
   const mensalidade = document.getElementById('alunoMensalidade').value;
   const status = document.getElementById('alunoStatus').value;
-  if(!nome || !telefone) { alert('Nome e telefone são obrigatórios.'); return; }
-  const aluno = { id: gerarId(), nome, apelido, telefone, email, dias, mensalidade: parseInt(mensalidade), status };
-  alunos.push(aluno);
-  localStorage.setItem('fisioAlunos', JSON.stringify(alunos));
-  document.getElementById('alunoMsg').innerText = 'Aluno salvo com sucesso!';
-  atualizarTabelaAlunos();
-  preencherSelectAlunos('fichaAluno');
-  preencherSelectAlunos('agendaAluno');
-  preencherSelectAlunos('reciboAluno');
-  preencherSelectAlunos('evolAluno');
-  preencherSelectAlunos('autAluno');
-  preencherSelectAlunos('fisioAluno');
-  // limpar campos
-  document.getElementById('alunoNome').value = '';
-  document.getElementById('alunoApelido').value = '';
-  document.getElementById('alunoTelefone').value = '';
-  document.getElementById('alunoEmail').value = '';
-  document.querySelectorAll('.dias:checked').forEach(cb => cb.checked = false);
+  alunos.push({ nome, apelido, telefone, email, dias, mensalidade, status });
+  salvar();
+  renderAlunos();
+  preencherSelectAluno();
+  this.reset();
+  alert('Aluno cadastrado com sucesso!');
+});
+
+function renderAlunos() {
+  const tbody = document.querySelector('#alunosTable tbody');
+  tbody.innerHTML = '';
+  alunos.forEach((a, i) => {
+    const statusClass = a.status === 'Ativo' ? 'status-ativo' : 'status-inativo';
+    tbody.innerHTML += `<tr>
+      <td>${a.nome}</td>
+      <td>${a.apelido}</td>
+      <td>${a.telefone}</td>
+      <td class="${statusClass}">${a.status}</td>
+      <td><button class="btn-danger" onclick="excluirAluno(${i})">Excluir</button></td>
+    </tr>`;
+  });
 }
 
-function excluirAluno(id) {
-  if(confirm('Tem certeza?')){
-    alunos = alunos.filter(a => a.id != id);
-    localStorage.setItem('fisioAlunos', JSON.stringify(alunos));
-    atualizarTabelaAlunos();
-    // remove de outras listas? simplificado
+function excluirAluno(index) {
+  if (confirm('Tem certeza?')) {
+    alunos.splice(index, 1);
+    salvar();
+    renderAlunos();
+    preencherSelectAluno();
   }
 }
 
-// Ficha
-let canvas, ctx, drawing = false;
-function initCanvas() {
-  canvas = document.getElementById('sigCanvas');
-  if(!canvas) return;
-  ctx = canvas.getContext('2d');
-  canvas.addEventListener('mousedown', startDrawing);
+// ===== Ficha =====
+document.getElementById('fichaForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const aluno = document.getElementById('fichaAluno').value;
+  if (!aluno) { alert('Selecione um aluno'); return; }
+  const cpf = document.getElementById('fichaCPF').value;
+  const jaFez = document.getElementById('fichaJaFez').value;
+  const erros = [];
+  document.querySelectorAll('#tab1 input[type="checkbox"]:checked').forEach(c => erros.push(c.value));
+  const assinatura = document.getElementById('canvasFicha').toDataURL();
+  const autorizacao = document.getElementById('fichaAutorizacao').checked;
+  fichas.push({ aluno, cpf, jaFez, erros, assinatura, autorizacao });
+  salvar();
+  alert('Ficha salva com sucesso!');
+  this.reset();
+});
+
+// ===== Canvas Assinatura =====
+(function() {
+  const canvas = document.getElementById('canvasFicha');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  canvas.addEventListener('mousedown', () => drawing = true);
+  canvas.addEventListener('mouseup', () => drawing = false);
   canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mouseleave', stopDrawing);
-  // touch events
-  canvas.addEventListener('touchstart', startDrawingTouch);
-  canvas.addEventListener('touchmove', drawTouch);
-  canvas.addEventListener('touchend', stopDrawing);
-}
-function startDrawing(e) {
-  drawing = true;
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX, e.offsetY);
-}
-function draw(e) {
-  if(!drawing) return;
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.stroke();
-}
-function stopDrawing() { drawing = false; }
-function startDrawingTouch(e) {
-  e.preventDefault();
-  const rect = canvas.getBoundingClientRect();
-  const touch = e.touches[0];
-  const x = touch.clientX - rect.left;
-  const y = touch.clientY - rect.top;
-  drawing = true;
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-}
-function drawTouch(e) {
-  e.preventDefault();
-  if(!drawing) return;
-  const rect = canvas.getBoundingClientRect();
-  const touch = e.touches[0];
-  const x = touch.clientX - rect.left;
-  const y = touch.clientY - rect.top;
-  ctx.lineTo(x, y);
-  ctx.stroke();
-}
-function clearCanvas() {
+  canvas.addEventListener('touchstart', () => drawing = true);
+  canvas.addEventListener('touchend', () => drawing = false);
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    draw({ offsetX: x, offsetY: y });
+  });
+  function draw(e) {
+    if (!drawing) return;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#000';
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+  }
+})();
+
+function clearCanvas(id) {
+  const canvas = document.getElementById(id);
+  const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-function getSignatureData() {
-  return canvas.toDataURL();
+
+// ===== Agenda =====
+let vagasPorHorario = {};
+for (let h = 7; h <= 20; h++) {
+  vagasPorHorario[${String(h).padStart(2,'0')}:00] = 7;
 }
 
-function salvarFicha() {
-  const alunoId = document.getElementById('fichaAluno').value;
-  if(!alunoId) { alert('Selecione um aluno.'); return; }
-  const cpf = document.getElementById('fichaCPF').value.trim();
-  const pilates = document.getElementById('fichaPilates').value.trim();
-  const erros = getErrosSelecionados();
-  const assinatura = getSignatureData();
-  const autorizacao = document.getElementById('fichaAutorizacao').checked;
-  const ficha = { alunoId, cpf, pilates, erros, assinatura, autorizacao };
-  fichas.push(ficha);
-  localStorage.setItem('fisioFichas', JSON.stringify(fichas));
-  document.getElementById('fichaMsg').innerText = 'Ficha salva!';
-  // limpar
-  document.getElementById('fichaCPF').value = '';
-  document.getElementById('fichaPilates').value = '';
-  document.querySelectorAll('.erro:checked').forEach(cb => cb.checked = false);
-  clearCanvas();
-  document.getElementById('fichaAutorizacao').checked = false;
-}
-
-// Agenda
-function preencherAgendaHorarios() {
-  const sel = document.getElementById('agendaHorario');
-  sel.innerHTML = '';
-  for(let h = 7; h <= 20; h++) {
-    for(let m = 0; m < 60; m += 30) {
-      const time = ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')};
-      if(h === 20 && m > 0) continue;
-      const opt = document.createElement('option');
-      opt.value = time;
-      opt.text = time;
-      sel.appendChild(opt);
-    }
-  }
-}
-
-function adicionarAgenda() {
-  const mes = document.getElementById('agendaMes').value;
-  const alunoId = document.getElementById('agendaAluno').value;
+function agendar() {
+  const mes = parseInt(document.getElementById('agendaMes').value);
+  const aluno = document.getElementById('agendaAluno').value;
   const horario = document.getElementById('agendaHorario').value;
-  if(!mes || !alunoId || !horario) { alert('Preencha todos os campos.'); return; }
-  const aluno = alunos.find(a => a.id == alunoId);
-  if(!aluno) { alert('Aluno não encontrado.'); return; }
-  // Verificar se aluno está ativo
-  if(aluno.status === 'inativo') {
-    alert('Aluno inativo não pode ser agendado.');
-    return;
-  }
-  // Verificar vagas (7 por horário)
-  const agendados = agendas.filter(a => a.mes === mes && a.horario === horario);
-  if(agendados.length >= 7) {
-    alert('Horário lotado (7 vagas).');
-    return;
-  }
-  const agenda = { id: gerarId(), mes, alunoId, horario, tipo: 'pilates' };
-  agendas.push(agenda);
-  localStorage.setItem('fisioAgendas', JSON.stringify(agendas));
-  document.getElementById('agendaMsg').innerText = 'Agendado!';
-  atualizarTabelaAgenda();
+  if (!aluno) { alert('Selecione um aluno'); return; }
+  const key = ${mes}_${horario};
+  if (!vagasPorHorario[horario]) vagasPorHorario[horario] = 7;
+  const agendadosNoHorario = agendamentos.filter(a => a.mes === mes && a.horario === horario).length;
+  if (agendadosNoHorario >= 7) { alert('Vagas esgotadas para este horário'); return; }
+  agendamentos.push({ mes, aluno, horario });
+  salvar();
+  renderAgenda();
+  alert('Agendado com sucesso!');
 }
 
-function atualizarTabelaAgenda() {
-  const tbody = document.getElementById('tabelaAgenda');
-  tbody.innerHTML = '<tr><th>Data</th><th>Aluno</th><th>Horário</th></tr>';
-  const mesFiltro = document.getElementById('agendaMes').value;
-  let filtradas = agendas;
-  if(mesFiltro) filtradas = agendas.filter(a => a.mes === mesFiltro);
-  filtradas.forEach(a => {
-    const aluno = alunos.find(al => al.id == a.alunoId);
-    const nome = aluno ? aluno.nome : 'Desconhecido';
-    const tr = document.createElement('tr');
-    tr.innerHTML = <td>${a.mes}</td><td>${nome}</td><td>${a.horario}</td>;
-    tbody.appendChild(tr);
+function renderAgenda() {
+  const tbody = document.querySelector('#agendaTable tbody');
+  tbody.innerHTML = '';
+  agendamentos.forEach(a => {
+    tbody.innerHTML += <tr><td>${a.aluno}</td><td>${a.horario}</td><td>${a.mes}</td></tr>;
   });
 }
 
-// Recibo
+// ===== Recibo =====
 function gerarRecibo() {
-  const alunoId = document.getElementById('reciboAluno').value;
-  if(!alunoId) { alert('Selecione aluno.'); return; }
-  const servico = parseInt(document.getElementById('reciboServico').value);
+  const aluno = document.getElementById('reciboAluno').value;
+  if (!aluno) { alert('Selecione um aluno'); return; }
+  const servicos = [];
+  document.querySelectorAll('#tab3 .checkbox-group input:checked').forEach(c => {
+    servicos.push({ nome: c.value, preco: parseFloat(c.dataset.preco) });
+  });
   const data = document.getElementById('reciboData').value;
   const obs = document.getElementById('reciboObs').value;
-  const aluno = alunos.find(a => a.id == alunoId);
-  const nome = aluno ? aluno.nome : 'Desconhecido';
-  let valorTotal = servico;
-  let descricao = '';
-  if(servico === 30) descricao = 'Camisa';
-  else if(servico === 15) descricao = 'Meia';
-  else if(servico === 80) descricao = 'Fisioterapia';
-  else descricao = 'Nenhum serviço adicional';
-  const reciboHTML = `
-    <div style="width:58mm; font-family: monospace; font-size: 12px;">
-      <h2 style="text-align:center;">Fisio Corpus</h2>
-      <hr>
-      <p><strong>Aluno:</strong> ${nome}</p>
-      <p><strong>Data:</strong> ${data}</p>
-      <p><strong>Serviço:</strong> ${descricao}</p>
-      <p><strong>Valor:</strong> R$ ${valorTotal.toFixed(2)}</p>
-      <p><strong>Obs:</strong> ${obs}</p>
-      <hr>
-      <p style="text-align:center;">Obrigado pela confiança!!</p>
-    </div>`;
-  document.getElementById('reciboPreview').innerHTML = reciboHTML;
-  // Adicionar ao financeiro? Não está claro, mas faremos
-  // Adicionar registro financeiro
-  const financ = { id: gerarId(), alunoId, mes: data ? data.slice(0,7) : '', valor: valorTotal, pago: false, tipo: 'recibo' };
-  financeiro.push(financ);
-  localStorage.setItem('fisioFinanceiro', JSON.stringify(financeiro));
-  atualizarTabelaFinanceiro();
-  // Imprimir
-  window.print();
+  let total = servicos.reduce((acc, s) => acc + s.preco, 0);
+  const recibo = { aluno, servicos, data, obs, total };
+  recibos.push(recibo);
+  salvar();
+  // Exibir recibo
+  let html = `<div style="border:1px solid #000; padding:10px; width:58mm; font-size:10px;">
+    <h4>Fisio Corpus</h4>
+    <p>Aluno: ${aluno}</p>
+    <p>Data: ${data}</p>
+    <ul>${servicos.map(s => <li>${s.nome} - R$ ${s.preco.toFixed(2)}</li>).join('')}</ul>
+    <p><strong>Total: R$ ${total.toFixed(2)}</strong></p>
+    <p>Obs: ${obs}</p>
+  </div>`;
+  document.getElementById('reciboOutput').innerHTML = html;
 }
 
-// Financeiro
-function atualizarTabelaFinanceiro() {
-  const tbody = document.getElementById('tabelaFinanceiro');
-  tbody.innerHTML = '<tr><th>Aluno</th><th>Mês</th><th>Valor</th><th>Status</th></tr>';
-  financeiro.forEach(f => {
-    const aluno = alunos.find(a => a.id == f.alunoId);
-    const nome = aluno ? aluno.nome : 'Desconhecido';
-    const statusClass = f.pago ? 'pago' : 'nao-pago';
-    const statusText = f.pago ? 'Pagou' : 'Não Pagou';
-    const tr = document.createElement('tr');
-    tr.innerHTML = <td>${nome}</td><td>${f.mes}</td><td>R$ ${f.valor.toFixed(2)}</td><td class="${statusClass}">${statusText}</td>;
-    tbody.appendChild(tr);
-  });
-}
-
-// Evolução
-function salvarEvolucao() {
-  const alunoId = document.getElementById('evolAluno').value;
-  const data = document.getElementById('evolData').value;
-  const melhora = document.getElementById('evolMelhora').checked;
-  const amplitude = document.getElementById('evolAmplitude').checked;
-  const consciencia = document.getElementById('evolConsciencia').checked;
-  const estado = document.getElementById('evolEstado').value;
-  const relato = document.getElementById('evolRelato').value;
-  if(!alunoId || !data) { alert('Preencha aluno e data.'); return; }
-  const evol = { id: gerarId(), alunoId, data, melhora, amplitude, consciencia, estado, relato };
-  evolucoes.push(evol);
-  localStorage.setItem('fisioEvolucoes', JSON.stringify(evolucoes));
-  document.getElementById('evolMsg').innerText = 'Evolução salva!';
-  // limpar
-  document.getElementById('evolData').value = '';
-  document.getElementById('evolMelhora').checked = false;
-  document.getElementById('evolAmplitude').checked = false;
-  document.getElementById('evolConsciencia').checked = false;
-  document.getElementById('evolRelato').value = '';
-}
-
-function imprimirEvolucao() {
-  const alunoId = document.getElementById('evolAluno').value;
-  const evol = evolucoes.filter(e => e.alunoId == alunoId).pop();
-  if(!evol) { alert('Nenhuma evolução encontrada.'); return; }
-  const aluno = alunos.find(a => a.id == alunoId);
-  const nome = aluno ? aluno.nome : 'Desconhecido';
-  const html = <div class="print-area"><h3>Evolução - ${nome}</h3><p>Data: ${evol.data}</p><p>Melhora dor: ${evol.melhora ? 'Sim' : 'Não'}</p><p>Aumento amplitude: ${evol.amplitude ? 'Sim' : 'Não'}</p><p>Maior consciência corporal: ${evol.consciencia ? 'Sim' : 'Não'}</p><p>Estado Geral: ${evol.estado}</p><p>Relato: ${evol.relato}</p></div>;
-  document.body.innerHTML += html;
-  window.print();
-  document.body.removeChild(document.body.lastElementChild);
-}
-
-// Autorização
-function gerarAutorizacao() {
-  const alunoId = document.getElementById('autAluno').value;
-  if(!alunoId) { alert('Selecione aluno.'); return; }
-  const aluno = alunos.find(a => a.id == alunoId);
-  const nome = aluno ? aluno.nome : 'Desconhecido';
-  const data = new Date().toLocaleDateString();
-  const declaracao = Eu, ${nome}, autorizo o uso da minha imagem para fins de divulgação e registro do Fisio Corpus. Data: ${data}.;
-  const html = <div class="print-area"><h3>Autorização de Imagem</h3><p>${declaracao}</p><p>Assinatura: _________________________</p></div>;
-  document.getElementById('autPreview').innerHTML = html;
-}
-
-function imprimirAutorizacao() {
-  const content = document.getElementById('autPreview').innerHTML;
-  if(!content) { alert('Gere a autorização primeiro.'); return; }
+function imprimirRecibo() {
+  const content = document.getElementById('reciboOutput').innerHTML;
+  if (!content) { alert('Gere um recibo primeiro'); return; }
   const win = window.open('', '', 'width=300,height=400');
-  win.document.write(<html><head><style>@media print{body *{visibility:hidden}.print-area,.print-area *{visibility:visible}.print-area{position:absolute;left:0;top:0}}</style></head><body>${content}</body></html>);
+  win.document.write(<html><head><title>Recibo</title><style>body{font-family:monospace; width:58mm;}</style></head><body>${content}</body></html>);
   win.document.close();
   win.print();
 }
 
-// Fisioterapia
-function preencherFisioHorarios() {
-  const sel = document.getElementById('fisioHorario');
-  sel.innerHTML = '';
-  for(let h = 7; h <= 20; h++) {
-    for(let m = 0; m < 60; m += 30) {
-      const time = ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')};
-      if(h === 20 && m > 0) continue;
-      const opt = document.createElement('option');
-      opt.value = time;
-      opt.text = time;
-      sel.appendChild(opt);
-    }
-  }
-}
-
-function salvarFisioterapia() {
-  const tipo = document.getElementById('fisioTipo').value;
-  const alunoId = document.getElementById('fisioAluno').value;
-  const data = document.getElementById('fisioData').value;
-  const horario = document.getElementById('fisioHorario').value;
-  const ventosa = document.getElementById('fisioVentosa').checked;
-  const agulhamento = document.getElementById('fisioAgulhamento').checked;
-  const outro = document.getElementById('fisioOutro').checked;
-  const compareceu = document.getElementById('fisioCompareceu').checked;
-  const evolucao = document.getElementById('fisioEvolucao').value;
-  if(!alunoId || !data || !horario) { alert('Preencha aluno, data e horário.'); return; }
-  // Verificar vagas
-  const agendados = fisioterapias.filter(f => f.data === data && f.horario === horario);
-  if(agendados.length >= 7) {
-    alert('Horário lotado.');
-    return;
-  }
-  const fisio = { id: gerarId(), tipo, alunoId, data, horario, ventosa, agulhamento, outro, compareceu, evolucao };
-  fisioterapias.push(fisio);
-  localStorage.setItem('fisioFisioterapias', JSON.stringify(fisioterapias));
-  document.getElementById('fisioMsg').innerText = 'Salvo!';
-  // Adicionar ao financeiro se compareceu (valor padrão 80)
-  if(compareceu) {
-    const financ = { id: gerarId(), alunoId, mes: data.slice(0,7), valor: 80, pago: false, tipo: 'fisioterapia' };
-    financeiro.push(financ);
-    localStorage.setItem('fisioFinanceiro', JSON.stringify(financeiro));
-    atualizarTabelaFinanceiro();
-  }
-  atualizarTabelaFisio();
-  // limpar
-  document.getElementById('fisioData').value = '';
-  document.getElementById('fisioVentosa').checked = false;
-  document.getElementById('fisioAgulhamento').checked = false;
-  document.getElementById('fisioOutro').checked = false;
-  document.getElementById('fisioCompareceu').checked = false;
-  document.getElementById('fisioEvolucao').value = '';
-}
-
-function atualizarTabelaFisio() {
-  const tbody = document.getElementById('tabelaFisio');
-  tbody.innerHTML = '<tr><th>Data</th><th>Aluno</th><th>Horário</th><th>Tipo</th></tr>';
-  fisioterapias.forEach(f => {
-    const aluno = alunos.find(a => a.id == f.alunoId);
-    const nome = aluno ? aluno.nome : 'Desconhecido';
-    const tr = document.createElement('tr');
-    tr.innerHTML = <td>${f.data}</td><td>${nome}</td><td>${f.horario}</td><td>${f.tipo}</td>;
-    tbody.appendChild(tr);
+// ===== Financeiro =====
+function renderFinanceiro() {
+  const tbody = document.querySelector('#financeiroTable tbody');
+  tbody.innerHTML = '';
+  alunos.forEach(a => {
+    const pagou = recibos.some(r => r.aluno === a.nome);
+    const statusClass = pagou ? 'pago' : 'nao-pago';
+    const valor = a.mensalidade === '1' ? 100 : a.mensalidade === '2' ? 140 : 170;
+    tbody.innerHTML += `<tr>
+      <td>${a.nome}</td>
+      <td>R$ ${valor.toFixed(2)}</td>
+      <td class="${statusClass}">${pagou ? 'Pagou' : 'Não Pagou'}</td>
+    </tr>`;
   });
 }
 
-// Init
-function init() {
-  initCanvas();
-  preencherSelectAlunos('fichaAluno');
-  preencherSelectAlunos('agendaAluno');
-  preencherSelectAlunos('reciboAluno');
-  preencherSelectAlunos('evolAluno');
-  preencherSelectAlunos('autAluno');
-  preencherSelectAlunos('fisioAluno');
-  preencherAgendaHorarios();
-  preencherFisioHorarios();
-  atualizarTabelaAlunos();
-  atualizarTabelaAgenda();
-  atualizarTabelaFinanceiro();
-  atualizarTabelaFisio();
-  // Set current month
-  const today = new Date();
-  const mes = today.toISOString().slice(0,7);
-  document.getElementById('agendaMes').value = mes;
-  document.getElementById('agendaMes').addEventListener('change', atualizarTabelaAgenda);
+// ===== Evolução =====
+document.getElementById('evolucaoForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const aluno = document.getElementById('evolAluno').value;
+  if (!aluno) { alert('Selecione um aluno'); return; }
+  const data = document.getElementById('evolData').value;
+  const checkboxes = [];
+  document.querySelectorAll('#tab5 input[type="checkbox"]:checked').forEach(c => checkboxes.push(c.value));
+  const estado = document.getElementById('evolEstado').value;
+  const relato = document.getElementById('evolRelato').value;
+  evolucoes.push({ aluno, data, checkboxes, estado, relato });
+  salvar();
+  alert('Evolução salva com sucesso!');
+  this.reset();
+});
+
+// ===== Autorização =====
+function imprimirAutorizacao() {
+  const texto = document.getElementById('autorizacaoTexto').innerText;
+  const win = window.open('', '', 'width=400,height=300');
+  win.document.write(<html><head><title>Autorização</title></head><body><p>${texto}</p></body></html>);
+  win.document.close();
+  win.print();
 }
+
+// ===== Fisioterapia =====
+function agendarFisio() {
+  const tipo = document.getElementById('fisioTipo').value;
+  const mes = parseInt(document.getElementById('fisioMes').value);
+  const horario = document.getElementById('fisioHorario').value;
+  const procedimentos = [];
+  document.querySelectorAll('#tab7 .checkbox-group input:checked').forEach(c => procedimentos.push(c.value));
+  const compareceu = document.getElementById('fisioCompareceu').value;
+  const evolucao = document.getElementById('fisioEvolucao').value;
+  // Aluno não é selecionado? Vamos adicionar um campo ou usar o último? Para simplificar, usamos o primeiro aluno da lista
+  const aluno = alunos.length > 0 ? alunos[0].nome : 'Sem aluno';
+  fisioterapias.push({ tipo, mes, horario, procedimentos, compareceu, evolucao, aluno });
+  salvar();
+  renderFisio();
+  alert('Agendado em Fisioterapia!');
+}
+
+function renderFisio() {
+  const tbody = document.querySelector('#fisioTable tbody');
+  tbody.innerHTML = '';
+  fisioterapias.forEach(f => {
+    tbody.innerHTML += <tr><td>${f.tipo}</td><td>${f.aluno}</td><td>${f.horario}</td><td>${f.procedimentos.join(', ')}</td></tr>;
+  });
+}
+
+// Inicializa
+loadData();
 </script>
 </body>
 </html>
