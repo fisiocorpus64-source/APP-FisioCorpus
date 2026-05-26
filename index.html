@@ -245,16 +245,15 @@ let evolucoes = JSON.parse(localStorage.getItem('fisioEvolucoes')) || [];
 let autorizacoes = JSON.parse(localStorage.getItem('fisioAutorizacoes')) || [];
 let fisioterapias = JSON.parse(localStorage.getItem('fisioFisioterapias')) || [];
 
-// Login
-function login() {
-  const pwd = document.getElementById('password').value;
-  if(pwd === 'pilates2024') {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    init();
-  } else {
-    document.getElementById('loginError').innerText = 'Senha incorreta!';
-  }
+// function login() {
+    const password = document.getElementById('passwordInput').value;
+    if (password === 'pilates2024') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        if (typeof init === 'function') init();
+    } else {
+        alert('Senha incorreta!');
+    }
 }
 function logout() {
   document.getElementById('app').style.display = 'none';
